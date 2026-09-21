@@ -1,0 +1,6 @@
+* text=auto
+*.pdf binary
+*.xlsx binary
+*.parquet binary
+*.duckdb binary
+*.png binary
