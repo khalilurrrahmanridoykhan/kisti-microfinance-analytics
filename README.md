@@ -1,7 +1,72 @@
 # MFI Portfolio Analytics
 
-Microfinance analytics for Bangladesh: real institution-level data from the Microcredit
-Regulatory Authority (MRA), plus a clearly labeled synthetic loan book for portfolio
-analysis (PAR, vintage curves, roll rates, savings and client dynamics).
+[![CI](https://github.com/khalilurrrahmanridoykhan/mfi-portfolio-analytics/actions/workflows/ci.yml/badge.svg)](https://github.com/khalilurrrahmanridoykhan/mfi-portfolio-analytics/actions/workflows/ci.yml)
+[![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
 
-Work in progress. See the roadmap once it lands in `docs/roadmap.md`.
+Microfinance analytics for Bangladesh, in two clearly separated layers:
+
+| Layer | Data | What it can claim |
+|---|---|---|
+| **Real** | The Microcredit Regulatory Authority's *Microfinance in Bangladesh (Annual Statistics)*: institution-level figures for 693 licensed MFIs, division and district coverage, sector series | Findings about the real sector |
+| **Synthetic** | A generated loan, client and savings book, calibrated to the real tables | How portfolio mechanics behave under stated assumptions, never findings about Bangladesh |
+
+Planned outputs: a sector analysis on the real data (concentration, sustainability, scale
+efficiency, pricing, funding mix, outreach, district coverage), portfolio analytics on the
+synthetic book (PAR, roll rates, vintage curves, collection efficiency, client and savings
+dynamics) in SQL and Python, finance models in Excel (effective interest rate, break-even,
+provisioning), and an interactive web dashboard.
+
+## Status
+
+Phase MF0 (repo, data provenance, glossary) is complete. Analysis begins in MF1. See the
+[roadmap](docs/roadmap.md). No results are published yet, and none are claimed.
+
+## What this project cannot tell you
+
+- **Delinquency by institution.** MRA publishes portfolio quality only for the sector as a
+  whole. Per-MFI "risk" ratios in the report are financial-structure ratios, not PAR.
+- **Anything about real clients or loans.** No client-level or loan-level data is public,
+  and none is used. All loan-level data here is synthetic and labeled as such.
+- **Credit, lending or supervisory decisions.** Outputs are analysis, not advice.
+
+## Quick start
+
+```sh
+make setup   # create .venv and install the package with dev tools
+make fetch   # download the MRA reports into data/real/raw/ and verify their checksums
+make test    # run the tests
+make lint    # ruff
+```
+
+Requires Python 3.11 or newer.
+
+## Data
+
+Sources, checksums and terms are in [`data/README.md`](data/README.md) and
+[`data/source-manifest.json`](data/source-manifest.json). The MRA reports carry a copyright
+notice and no open licence, so the PDFs are fetched, never committed; extracted tables
+contain published numbers only and are attributed to MRA.
+
+## Layout
+
+```
+data/          provenance, real (raw, processed) and synthetic data
+docs/          roadmap, glossary of every metric and formula
+src/mfi/       package code
+tests/         tests
+```
+
+## Contributing
+
+Issues and corrections are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) and the
+[Code of Conduct](CODE_OF_CONDUCT.md). To report a security problem, see
+[SECURITY.md](SECURITY.md).
+
+## License
+
+Code is released under the [Apache License 2.0](LICENSE). Published statistics remain the
+property of their publisher; see [`data/README.md`](data/README.md).
+
+## Citation
+
+See [`CITATION.cff`](CITATION.cff), or use GitHub's "Cite this repository".
