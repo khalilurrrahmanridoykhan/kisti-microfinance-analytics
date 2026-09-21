@@ -15,7 +15,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 MANIFEST = ROOT / "data" / "source-manifest.json"
-USER_AGENT = "mfi-portfolio-analytics (+https://github.com/khalilurrrahmanridoykhan/mfi-portfolio-analytics)"
+USER_AGENT = "kisti-microfinance-analytics (+https://github.com/khalilurrrahmanridoykhan/kisti-microfinance-analytics)"
 
 
 class ChecksumError(RuntimeError):

@@ -75,7 +75,7 @@ contain published numbers only and are attributed to MRA.
 ```
 data/          provenance, real (raw, processed) and synthetic data
 docs/          roadmap, glossary of every metric and formula
-src/mfi/       package code
+src/kisti/      package code
 tests/         tests
 ```
 

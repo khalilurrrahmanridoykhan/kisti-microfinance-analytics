@@ -2,7 +2,7 @@ import re
 
 import pytest
 
-from mfi.fetch import ROOT, load_manifest, sha256_of
+from kisti.fetch import ROOT, load_manifest, sha256_of
 
 REQUIRED = {"path", "url", "sha256", "bytes", "description", "publisher", "terms", "retrieved"}
 

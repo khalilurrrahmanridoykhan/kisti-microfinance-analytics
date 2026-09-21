@@ -3,7 +3,7 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "mfi-portfolio-analytics"
+name = "kisti-microfinance-analytics"
 version = "0.0.0"
 description = "Microfinance analytics for Bangladesh: real MRA institution-level data plus a calibrated synthetic loan book."
 readme = "README.md"
