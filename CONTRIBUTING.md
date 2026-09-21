@@ -36,6 +36,8 @@ suggestions are welcome.
 ```sh
 make setup   # create .venv and install the package with dev tools
 make fetch   # download the source PDFs and verify their checksums
+make extract # rebuild data/real/processed/ from the PDF
+make crosscheck  # compare the tables with a second extraction method (needs poppler)
 make test    # run the tests
 make lint    # ruff
 ```

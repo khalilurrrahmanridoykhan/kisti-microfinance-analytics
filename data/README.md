@@ -5,7 +5,7 @@ Two layers, kept in separate folders and never mixed in one table or chart.
 | Folder | Layer | Status |
 |---|---|---|
 | `data/real/raw/` | Source PDFs fetched from the publisher (not committed) | Fetched by `make fetch` |
-| `data/real/processed/` | Tidy tables extracted from the PDFs, with attribution | Phase MF1 |
+| `data/real/processed/` | Tidy tables extracted from the June 2025 report, with attribution | Done (MF1), see [docs/extraction-notes.md](../docs/extraction-notes.md) |
 | `data/synthetic/` | Generated loan, client and savings records, **not real people** | Phase MF4 |
 
 ## Real sources
@@ -25,6 +25,9 @@ attributed to MRA; if the publisher objects, they will be removed.
 
 ## What the real data does not contain
 
+- Not every MFI appears in every table: 693 in the Basic table, 626, 600, 540 and 569 in the
+  positions, cost, risk and fund tables. The per-MFI rows also fall slightly short of the
+  printed sector totals. Details are in the extraction notes.
 - No per-MFI portfolio at risk. Loan-loss classification is published only for the
   sector as a whole (June 2025 report, Table 2.1).
 - No client-level or loan-level records. That is why the loan-level work uses a
