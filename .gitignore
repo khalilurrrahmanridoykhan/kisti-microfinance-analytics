@@ -1,0 +1,29 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+build/
+dist/
+
+# Web app (added in a later phase)
+node_modules/
+web/dist/
+
+# Notebooks
+.ipynb_checkpoints/
+
+# Downloaded source documents are fetched by `make fetch`, not committed (see data/README.md)
+data/real/raw/*
+!data/real/raw/.gitkeep
+
+# Local caches and databases
+data/cache/
+data/interim/
+*.duckdb
+*.duckdb.wal
+
+# OS
+.DS_Store
