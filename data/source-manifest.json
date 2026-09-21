@@ -1,0 +1,26 @@
+{
+  "files": [
+    {
+      "path": "data/real/raw/mra_annual_statistics_2025-06.pdf",
+      "url": "https://objectstorage.ap-dcc-gazipur-1.oraclecloud15.com/n/axvjbnqprylg/b/V2Ministry/o/office-mra/2026/7/d99cfa35-73ac-40a2-8cde-0c3617f1c7b2.pdf",
+      "sha256": "29780bdaec05f0b2dd5afc4d3307d0003bb2cb111a6f400d7a80b8e02a1916d0",
+      "bytes": 5252135,
+      "pages": 394,
+      "description": "Microfinance in Bangladesh (Annual Statistics), June 2025. Sector series, division and district coverage, and per-MFI tables for 693 licensed MFIs.",
+      "publisher": "Microcredit Regulatory Authority (MRA), Bangladesh. Published January 2026 per the title page.",
+      "terms": "Copyright MRA (notice on the title page). No open licence stated. The PDF is not redistributed here; extracted numeric tables are shared with attribution.",
+      "retrieved": "2026-09-21"
+    },
+    {
+      "path": "data/real/raw/mra_annual_statistics_2024-06.pdf",
+      "url": "https://objectstorage.ap-dcc-gazipur-1.oraclecloud15.com/n/axvjbnqprylg/b/V2Ministry/o/office-mra/2024/12/57f08a5472ac4d818047f96b5f22552b.pdf",
+      "sha256": "61c52c25a516d97f85f97344255fd95e1d38c54178fc132de9c33ad0908c3dd8",
+      "bytes": 12903343,
+      "pages": 394,
+      "description": "Microfinance in Bangladesh (Annual Statistics), June 2024. Same series one year earlier, for the two-year comparison in phase MF3. Table layout not yet compared with the 2025 edition.",
+      "publisher": "Microcredit Regulatory Authority (MRA), Bangladesh.",
+      "terms": "Copyright MRA. No open licence stated. The PDF is not redistributed here; extracted numeric tables are shared with attribution.",
+      "retrieved": "2026-09-21"
+    }
+  ]
+}
