@@ -1,4 +1,4 @@
-.PHONY: setup fetch extract crosscheck test lint
+.PHONY: setup fetch extract crosscheck analyse test lint
 
 setup:
 	python3 -m venv .venv
@@ -8,13 +8,18 @@ setup:
 fetch:
 	.venv/bin/python -m kisti.fetch
 
-# Extract the MRA tables from the PDF into data/real/processed/ (about a minute)
+# Extract the MRA tables (about a minute) and the census district populations into data/real/processed/
 extract:
 	.venv/bin/python -m kisti.extract
+	.venv/bin/python -m kisti.extract.census
 
 # Compare the extracted tables with a second extraction method (needs poppler's pdftotext)
 crosscheck:
 	.venv/bin/python scripts/crosscheck_pdftotext.py
+
+# Run the sector analysis: writes RESULTS.md, results/tables, results/figures and results/summary.json
+analyse:
+	.venv/bin/python -m kisti.analysis
 
 test:
 	.venv/bin/python -m pytest -q

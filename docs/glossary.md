@@ -66,6 +66,22 @@ must be taken from the MRA rule itself and cited before it is used in phase MF5.
 | Herfindahl-Hirschman index (HHI) | Sum of squared market shares, on a 0 to 10,000 scale |
 | Gini coefficient | Inequality of a measure (for example loan outstanding) across institutions |
 
+## Terms used in the sector analysis (phase MF2)
+
+| Term | Definition used here |
+|---|---|
+| Active MFI | Loan outstanding and borrowers both above zero in the Basic table |
+| Size band | Loan outstanding: below 10 million, 10-100 million, 100 million-1 billion, 1-10 billion, 10 billion and above taka |
+| OSS below 100 | The MFI's income does not cover its financial cost, loan-loss provision and operating cost |
+| Operating cost per 100 taka | MRA's total operating cost ratio: cost per 100 taka of loan outstanding |
+| Loans per employee | Loan outstanding divided by total employees |
+| Cost per borrower | Operating cost ratio / 100 x average loan size |
+| Average loan size | Loan outstanding divided by borrowers |
+| Women's share of clients | Female clients divided by total clients |
+| Borrowers per 1,000 people | MFI borrowers in a district divided by its Census 2022 population, times 1,000 |
+| Spearman correlation | Rank correlation between two measures across MFIs; describes association, not cause |
+| Silhouette | How well separated k-means groups are, from -1 to 1; below about 0.25 means weak structure |
+
 ## Scopes in the MRA report
 
 | Scope | Includes |

@@ -81,6 +81,12 @@ members and borrowers (million), loan disbursement, loan outstanding and savings
 (good, watchful, sub_standard, doubtful, bad, total), `specification` as printed,
 `amount_billion_bdt`, `share_pct`, `is_non_performing`.
 
+**`district_population.csv`** (64 rows). Census 2022, from BBS via the Humanitarian Data Exchange:
+`district`, `division`, BBS geocodes (`division_geocode`, `district_geocode`), `households`,
+`population` (everyone, all ages), `financial_account_pct` and `mobile_banking_pct` (percent of
+people with a financial-institution or mobile-banking account, as labeled by BBS). MRA spells
+three districts differently (Barisal, Bogra, Maulvibazar); `kisti.extract.census` maps them.
+
 **`extraction_issues.csv`.** Rows flagged while reading: `table`, `serial`, `page`, `issue`.
 
 ## Synthetic tables (defined in MF4)
@@ -88,3 +94,19 @@ members and borrowers (million), loan disbursement, loan outstanding and savings
 `branches`, `officers`, `centers`, `clients`, `loans`, `schedule`, `payments`,
 `savings_txn` and `products`, with every generator parameter and its source in
 `docs/assumptions.md`.
+
+## Analysis outputs (`results/`)
+
+Written by `make analyse` (phase MF2). Every figure in `RESULTS.md` has its table in
+`results/tables/`, named `NN_topic.csv` after the section it belongs to. Conventions:
+
+| Term | Meaning |
+|---|---|
+| Active MFI | A Basic-table row with loan outstanding and borrowers both above zero (644 of 693) |
+| Size band | Loan outstanding: below 10 million, 10-100 million, 100 million-1 billion, 1-10 billion, 10 billion and above (taka) |
+| `*_median` | Median across MFIs, each MFI counting once |
+| `*_share_pct` (sector) | Sum of the numerators over the sum of the denominators, so large MFIs dominate |
+| `*_n` | Number of MFIs behind a median (a ratio is computed only for MFIs that report it) |
+| `borrowers_per_1000` | MFI borrowers per 1,000 people in the district (Census 2022 population) |
+
+`results/summary.json` holds the headline numbers that the tests recompute independently.

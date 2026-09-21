@@ -20,6 +20,7 @@ what the report itself gets wrong or leaves out. Regenerate everything with `mak
 | `division_summary.csv` | 9 | Table 3.1 | 8 divisions and the grand total |
 | `sector_timeseries.csv` | 70 | Table 1.3 | 7 metrics for each of 10 fiscal years, MFIs only |
 | `sector_llp.csv` | 6 | Table 2.1 | Consolidated loan classification, MFIs only |
+| `district_population.csv` | 64 | Census 2022 district tables (HDX copy of BBS data) | 64 districts; `make extract` reads it from the Excel file |
 | `extraction_issues.csv` | 2 | The extractors | Rows flagged while reading |
 
 **Not extracted:** Chapter 10 (size-wise savings and disbursement, which can be recomputed
@@ -112,3 +113,12 @@ the per-MFI rows should say that the base is the sum of MFI rows.
 matches the second method, so it is what the report prints.
 
 **Units and conventions** are in [data-dictionary.md](data-dictionary.md).
+
+## Census district populations (added in MF2)
+
+`district_population.csv` comes from the Census 2022 district tables that UN in Bangladesh
+published on the Humanitarian Data Exchange (a copy of BBS tables, listed as CC0). The 64
+districts sum to 165,158,616 people, the national census total. MRA's spellings differ from
+the census for three districts (Barisal, Bogra, Maulvibazar); the mapping is in
+`kisti.extract.census` and a test checks that all 64 MRA districts match exactly one census
+district. The workbook's tab names carry stray spaces, so sheets are found by their stripped names.

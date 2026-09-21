@@ -1,0 +1,6 @@
+size_band,n_mfis,clients_savings_share_pct,bank_loans_share_pct,pksf_loans_share_pct,other_borrowing_share_pct,donor_funds_share_pct,surplus_and_other_share_pct
+< 10 million,31,37.4940,3.6508,0.0000,19.6108,3.8055,35.4389
+10-100 million,273,36.8645,3.6470,5.4829,20.0231,1.0157,32.9669
+100 million-1 billion,138,35.5781,6.1806,22.2441,7.0267,2.1638,26.8067
+1-10 billion,90,35.5017,10.4238,22.6892,2.8390,0.2427,28.3035
+10 billion +,23,40.8904,11.6383,2.7699,2.9749,0.0792,41.6472

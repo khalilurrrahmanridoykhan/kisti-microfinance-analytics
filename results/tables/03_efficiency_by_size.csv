@@ -1,0 +1,6 @@
+size_band,n_mfis,op_cost_ratio_median,op_cost_ratio_n,admin_cost_ratio_median,admin_cost_ratio_n,financial_cost_ratio_median,financial_cost_ratio_n,borrowers_per_employee_median,borrowers_per_employee_n,borrowers_per_branch_median,borrowers_per_branch_n,loan_per_employee_bdt_median,loan_per_employee_bdt_n,cost_per_borrower_bdt_median,cost_per_borrower_bdt_n
+< 10 million,47,16.5300,35,13.6900,35,1.7200,35,160.5000,47,558.0000,47,1187135.7143,47,1292.1465,35
+10-100 million,326,15.1850,290,11.0950,290,3.3600,288,112.6667,323,630.6250,326,2429006.7037,323,3187.0711,290
+100 million-1 billion,153,16.6850,144,12.0900,144,4.6700,144,116.2093,153,736.0667,153,3972864.2857,153,5996.5629,144
+1-10 billion,94,16.9750,94,11.2350,94,5.5350,94,121.2943,94,925.4825,94,6142913.4901,94,8503.3326,94
+10 billion +,24,16.8100,23,10.1900,23,6.6100,23,121.9290,24,1127.1783,24,7406370.3893,24,10083.5574,23

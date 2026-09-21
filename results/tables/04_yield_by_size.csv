@@ -1,0 +1,6 @@
+size_band,n_mfis,yield_median,above_reference_share_pct
+< 10 million,29,13.3500,13.7931
+10-100 million,266,18.1350,4.8872
+100 million-1 billion,132,20.5950,4.5455
+1-10 billion,88,21.3950,5.6818
+10 billion +,23,21.2800,0.0000

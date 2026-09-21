@@ -1,0 +1,7 @@
+check,mfis_checked,mfis_flagged,loans_share_of_flagged_pct
+Portfolio yield outside 3% to 40%,538,7,0.0185
+OSS outside 40% to 250%,538,13,0.0191
+ROA outside -25% to 25%,538,3,0.0037
+Operating cost above 50 per 100 taka of loans,586,3,0.0015
+"More than 1,000 borrowers per employee",641,7,0.2117
+"Average loan below 5,000 or above 250,000 taka",644,9,0.0125

@@ -21,6 +21,16 @@
       "publisher": "Microcredit Regulatory Authority (MRA), Bangladesh.",
       "terms": "Copyright MRA. No open licence stated. The PDF is not redistributed here; extracted numeric tables are shared with attribution.",
       "retrieved": "2026-09-21"
+    },
+    {
+      "path": "data/real/raw/bbs_census_2022_admin2.xlsx",
+      "url": "https://data.humdata.org/dataset/a6fedebe-72fe-4fc2-8657-1580acfa32c6/resource/72eaaa6c-6a30-4efd-bad9-02133b316ea8/download/bangladesh_bbs_population-and-housing-census-dataset_2022_admin-02.xlsx",
+      "sha256": "cb60acee92c7f90413fff1c6bdc95d3a90e49743e7ae221dc8c9fb0daf8fab0e",
+      "bytes": 1213869,
+      "description": "Bangladesh Population and Housing Census 2022, district (Admin 2) tables for all 64 districts: population, households, and the share of people with a financial-institution or mobile-banking account. Used for coverage per 1,000 people in phase MF2.",
+      "publisher": "Bangladesh Bureau of Statistics (BBS), census tables published on the Humanitarian Data Exchange by UN in Bangladesh (dataset updated 2024-03-31).",
+      "terms": "Listed on HDX as Public Domain / No restrictions (CC0). Attribute BBS.",
+      "retrieved": "2026-09-22"
     }
   ]
 }
