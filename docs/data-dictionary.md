@@ -1,8 +1,8 @@
 # Data dictionary
 
 Conventions that apply to every table in this project, and the fields of the source
-manifest. Per-table column definitions are added in phase MF1 (real tables) and phase MF4
-(synthetic tables), in the same phase that creates the table.
+manifest. Per-table column definitions are added in the phase that creates each table: real tables in
+phase MF1, synthetic tables in phase MF4.
 
 ## Conventions
 
@@ -30,11 +30,58 @@ manifest. Per-table column definitions are added in phase MF1 (real tables) and 
 | `terms` | text | Copyright or licence statement and how the file is handled |
 | `retrieved` | date | Day it was downloaded (`YYYY-MM-DD`) |
 
-## Real tables (defined in MF1)
+## Real tables (`data/real/processed/`)
 
-Institution-level tables come from chapters 5 to 9 of the MRA report, district and division
-tables from chapter 3, and sector series from chapters 1 and 2. Their columns are defined
-here when each table is extracted.
+Source, page ranges and known problems are in [extraction-notes.md](extraction-notes.md).
+Every per-MFI table has the leading columns below, then its own measures.
+
+| Column | Type | Meaning |
+|---|---|---|
+| `edition` | text | Report edition, `2025-06` |
+| `serial` | integer | Row number as printed in that table |
+| `license_no` | integer | Last group of the licence number, the key that joins tables |
+| `license_printed` | text | Full licence number as printed (serial 600 of the Basic table repeats another MFI's) |
+| `name` | text | MFI name, taken from the ratio and fund tables where the MFI appears there |
+| `page` | integer | PDF page the row was read from (printed page is one lower) |
+
+**`mfi_basic.csv`** (693 rows). Counts are people; money is in taka.
+`branches`; `employees_male`, `employees_female`, `employees_total`; `clients_male`,
+`clients_female`, `clients_third_gender`, `clients_total`; `borrowers_male`, `borrowers_female`,
+`borrowers_third_gender`, `borrowers_total`; `savings_bdt`, `loan_disbursement_bdt`,
+`loan_outstanding_bdt`. Clients are members; borrowers are members with a loan.
+
+**`mfi_positions.csv`** (626 rows). Rank of the MFI among all MFIs, 1 is the largest:
+`rank_loan_outstanding`, `rank_loan_disbursement`, `rank_branches`, `rank_borrowers`.
+
+**`mfi_cost_ratios.csv`** (600 rows). Taka per 100 taka of loan outstanding:
+`saving_cost_ratio`, `borrowing_cost_ratio`, `total_financial_cost_ratio` (sum of the two),
+`general_admin_cost_ratio`, `total_operating_cost_ratio`.
+
+**`mfi_risk_ratios.csv`** (540 rows). Percent, as in the [glossary](glossary.md):
+`borrowing_to_loan_outstanding`, `operating_cost_to_income`, `capital_fund_to_loan_outstanding`,
+`portfolio_yield`, `return_on_assets`, `operating_self_sufficiency`, `operating_margin`.
+
+**`mfi_fund_composition.csv`** (3,291 rows, 569 MFIs). One row per MFI and fund type.
+`fund_type` is Clients' Savings, Loan from Commercial Banks, Loan from PKSF, Loan from Other
+MFIs, Loan from Govt., Other loans, Donors' Fund, Cumulative Surplus, Other Fund or Total.
+`amount_2025_06_bdt` and `amount_2024_06_bdt` are taka; `share_2025_06_pct` and
+`share_2024_06_pct` are the share of that MFI's total funds, in percent.
+
+**`district_coverage.csv`** (73 rows) and **`division_summary.csv`** (9 rows). `row_type` is
+`district`, `division_total` or `all_districts` (districts only). Measures, all MFIs, June 2025:
+`branches`, `members`, `borrowers`, `loan_outstanding_bdt`, `savings_bdt`, each followed by its
+`_share_pct` of the national total. Some district names follow the report's spelling
+(for example Bogra, Barisal, Chapai Nababganj).
+
+**`sector_timeseries.csv`** (70 rows). Long format: `scope` (MFIs), `fiscal_year`
+(`2015-16` to `2024-25`), `metric`, `unit`, `value`. Metrics: branches and employees (count),
+members and borrowers (million), loan disbursement, loan outstanding and savings (billion BDT).
+
+**`sector_llp.csv`** (6 rows). Consolidated loan classification, MFIs, June 2025: `category`
+(good, watchful, sub_standard, doubtful, bad, total), `specification` as printed,
+`amount_billion_bdt`, `share_pct`, `is_non_performing`.
+
+**`extraction_issues.csv`.** Rows flagged while reading: `table`, `serial`, `page`, `issue`.
 
 ## Synthetic tables (defined in MF4)
 

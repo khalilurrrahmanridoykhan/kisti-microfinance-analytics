@@ -19,8 +19,9 @@ provisioning), and an interactive web dashboard.
 
 ## Status
 
-Phase MF0 (repo, data provenance, glossary) is complete. Analysis begins in MF1. See the
-[roadmap](docs/roadmap.md). No results are published yet, and none are claimed.
+Phases MF0 (repo, data provenance, glossary) and MF1 (the MRA June 2025 tables extracted to
+tested CSVs) are complete. Analysis begins in MF2. See the [roadmap](docs/roadmap.md). No
+analysis results are published yet, and none are claimed.
 
 ## What this project cannot tell you
 
@@ -58,6 +59,7 @@ Conventions, units and missing-value handling are in the
 ```sh
 make setup   # create .venv and install the package with dev tools
 make fetch   # download the MRA reports into data/real/raw/ and verify their checksums
+make extract # read the June 2025 tables into data/real/processed/ (about a minute)
 make test    # run the tests
 make lint    # ruff
 ```
@@ -75,9 +77,10 @@ contain published numbers only and are attributed to MRA.
 
 ```
 data/          provenance, real (raw, processed) and synthetic data
-docs/          roadmap, glossary of every metric and formula
-src/kisti/      package code
-tests/         tests
+docs/          roadmap, glossary, data dictionary, extraction notes
+src/kisti/     package code (fetch, extract)
+scripts/       cross-check of the extracted tables against a second method
+tests/         tests, including reconciliation of the extracted tables
 ```
 
 ## Contributing
