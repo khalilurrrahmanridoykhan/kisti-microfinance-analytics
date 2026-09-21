@@ -6,7 +6,7 @@ setup:
 
 # Download the public source documents into data/real/raw/ and verify their checksums
 fetch:
-	.venv/bin/python -m mfi.fetch
+	.venv/bin/python -m kisti.fetch
 
 test:
 	.venv/bin/python -m pytest -q

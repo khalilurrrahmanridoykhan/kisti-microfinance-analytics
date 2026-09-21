@@ -2,7 +2,7 @@ import hashlib
 
 import pytest
 
-from mfi.fetch import ChecksumError, fetch_file, sha256_of
+from kisti.fetch import ChecksumError, fetch_file, sha256_of
 
 
 def make_source(tmp_path, content=b"microfinance"):
