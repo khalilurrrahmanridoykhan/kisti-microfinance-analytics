@@ -1,0 +1,8 @@
+measure,spearman_with_size,n_pairs
+op_cost_ratio,0.2099,586
+admin_cost_ratio,-0.0399,586
+financial_cost_ratio,0.4968,584
+borrowers_per_employee,-0.0025,641
+borrowers_per_branch,0.2277,644
+loan_per_employee_bdt,0.7634,641
+cost_per_borrower_bdt,0.7726,586

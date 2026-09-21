@@ -1,0 +1,20 @@
+{
+  "avg_loan_size_bdt": 51926.56471979836,
+  "bank_loan_share_change_pp": -2.858593385185401,
+  "female_client_share_pct": 91.04915117759923,
+  "gini_loan_outstanding": 0.9326933003310297,
+  "hhi_loan_outstanding": 957.1410599087875,
+  "loan_outstanding_active_bdt": 1748721573287.0,
+  "mfis_active": 644,
+  "mfis_in_basic": 693,
+  "n_groups": 4,
+  "national_borrowers_per_1000": 203.9377043459846,
+  "oss_below_100_count": 126,
+  "oss_below_100_loans_share_pct": 2.2958237710435596,
+  "oss_below_100_of": 538,
+  "screening_flagged": 50,
+  "top4_borrower_share_pct": 50.599020335055386,
+  "top4_loan_share_pct": 50.469027311825464,
+  "yield_above_reference_count": 28,
+  "yield_median": 19.98
+}
