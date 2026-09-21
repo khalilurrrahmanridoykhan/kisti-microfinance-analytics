@@ -29,6 +29,29 @@ Phase MF0 (repo, data provenance, glossary) is complete. Analysis begins in MF1.
   and none is used. All loan-level data here is synthetic and labeled as such.
 - **Credit, lending or supervisory decisions.** Outputs are analysis, not advice.
 
+## Privacy and sensitive data
+
+The real layer is published, institution-level and aggregate: it describes organisations
+and their totals, not people. The synthetic layer is generated and describes no real
+person. The repository holds no person-level records and no sensitive data, and none must
+be added: no client names, national IDs, phone numbers, addresses, loan files or
+field-collected submissions.
+
+## Ethics
+
+No human participants are involved, so no institutional review or informed consent applies:
+the work uses only published aggregate statistics and synthetic data. One care point
+remains. The real tables name individual institutions, and ratios can be misread as
+accusations. Results are therefore reported as what the published figures show, with
+their limits, and a screening rule based on financial ratios is never presented as
+evidence of poor practice by a named institution.
+
+## Data description
+
+Conventions, units and missing-value handling are in the
+[data dictionary](docs/data-dictionary.md); every metric formula is in the
+[glossary](docs/glossary.md).
+
 ## Quick start
 
 ```sh
