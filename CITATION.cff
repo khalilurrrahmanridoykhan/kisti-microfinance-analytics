@@ -6,7 +6,7 @@ authors:
   - family-names: "Khan"
     given-names: "Khalilur Rahman Ridoy"
     alias: "khalilurrrahmanridoykhan"
-repository-code: "https://github.com/khalilurrrahmanridoykhan/mfi-portfolio-analytics"
+repository-code: "https://github.com/khalilurrrahmanridoykhan/kisti-microfinance-analytics"
 license: Apache-2.0
 abstract: >-
   Microfinance analytics for Bangladesh in two clearly separated layers: real

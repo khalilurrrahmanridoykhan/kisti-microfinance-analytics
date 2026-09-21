@@ -10,7 +10,7 @@ be used to do so. All loan-level data in it is generated.
 
 If you find a security problem (for example a leaked credential, a vulnerable dependency,
 or a workflow that could be abused), please report it privately through
-[GitHub private vulnerability reporting](https://github.com/khalilurrrahmanridoykhan/mfi-portfolio-analytics/security/advisories/new)
+[GitHub private vulnerability reporting](https://github.com/khalilurrrahmanridoykhan/kisti-microfinance-analytics/security/advisories/new)
 instead of opening a public issue.
 
 You can expect an acknowledgement within a few days. This is a small analysis project, so
