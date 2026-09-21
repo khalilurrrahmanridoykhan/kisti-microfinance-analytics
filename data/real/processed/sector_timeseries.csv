@@ -1,0 +1,71 @@
+scope,fiscal_year,metric,unit,value
+MFIs,2024-25,branches,count,27113
+MFIs,2024-25,employees,count,234380
+MFIs,2024-25,members,million,43.98
+MFIs,2024-25,borrowers,million,33.68
+MFIs,2024-25,loan_disbursement,billion BDT,2770.38
+MFIs,2024-25,loan_outstanding,billion BDT,1748.8
+MFIs,2024-25,savings,billion BDT,799.32
+MFIs,2023-24,branches,count,26071
+MFIs,2023-24,employees,count,223459
+MFIs,2023-24,members,million,41.55
+MFIs,2023-24,borrowers,million,32.17
+MFIs,2023-24,loan_disbursement,billion BDT,2615.24
+MFIs,2023-24,loan_outstanding,billion BDT,1594.1
+MFIs,2023-24,savings,billion BDT,685.91
+MFIs,2022-23,branches,count,25225
+MFIs,2022-23,employees,count,206237
+MFIs,2022-23,members,million,40.86
+MFIs,2022-23,borrowers,million,31.53
+MFIs,2022-23,loan_disbursement,billion BDT,2493.02
+MFIs,2022-23,loan_outstanding,billion BDT,1504.18
+MFIs,2022-23,savings,billion BDT,620.55
+MFIs,2021-22,branches,count,23543
+MFIs,2021-22,employees,count,206713
+MFIs,2021-22,members,million,38.27
+MFIs,2021-22,borrowers,million,29.74
+MFIs,2021-22,loan_disbursement,billion BDT,1918.83
+MFIs,2021-22,loan_outstanding,billion BDT,1241.49
+MFIs,2021-22,savings,billion BDT,496.24
+MFIs,2020-21,branches,count,20955
+MFIs,2020-21,employees,count,175741
+MFIs,2020-21,members,million,35.19
+MFIs,2020-21,borrowers,million,27.8
+MFIs,2020-21,loan_disbursement,billion BDT,1512.09
+MFIs,2020-21,loan_outstanding,billion BDT,949.85
+MFIs,2020-21,savings,billion BDT,422.39
+MFIs,2019-20,branches,count,20898
+MFIs,2019-20,employees,count,171110
+MFIs,2019-20,members,million,33.31
+MFIs,2019-20,borrowers,million,26.15
+MFIs,2019-20,loan_disbursement,billion BDT,1362.75
+MFIs,2019-20,loan_outstanding,billion BDT,888.64
+MFIs,2019-20,savings,billion BDT,373.9
+MFIs,2018-19,branches,count,18825
+MFIs,2018-19,employees,count,159965
+MFIs,2018-19,members,million,32.36
+MFIs,2018-19,borrowers,million,25.76
+MFIs,2018-19,loan_disbursement,billion BDT,1407.2
+MFIs,2018-19,loan_outstanding,billion BDT,787.58
+MFIs,2018-19,savings,billion BDT,306.19
+MFIs,2017-18,branches,count,18196
+MFIs,2017-18,employees,count,153919
+MFIs,2017-18,members,million,31.2
+MFIs,2017-18,borrowers,million,25.39
+MFIs,2017-18,loan_disbursement,billion BDT,1202
+MFIs,2017-18,loan_outstanding,billion BDT,675.05
+MFIs,2017-18,savings,billion BDT,263.04
+MFIs,2016-17,branches,count,17081
+MFIs,2016-17,employees,count,137607
+MFIs,2016-17,members,million,29.75
+MFIs,2016-17,borrowers,million,24.72
+MFIs,2016-17,loan_disbursement,billion BDT,1046.12
+MFIs,2016-17,loan_outstanding,billion BDT,570.62
+MFIs,2016-17,savings,billion BDT,217.93
+MFIs,2015-16,branches,count,16204
+MFIs,2015-16,employees,count,122335
+MFIs,2015-16,members,million,27.1
+MFIs,2015-16,borrowers,million,22.8
+MFIs,2015-16,loan_disbursement,billion BDT,776
+MFIs,2015-16,loan_outstanding,billion BDT,448.1
+MFIs,2015-16,savings,billion BDT,169.04

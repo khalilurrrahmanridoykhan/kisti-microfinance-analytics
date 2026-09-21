@@ -1,0 +1,7 @@
+edition,scope,category,specification,amount_billion_bdt,share_pct,is_non_performing
+2025-06,MFIs,good,Good Loan Regular,1445.11,82.63,False
+2025-06,MFIs,watchful,Watchful Loans due between 1 to 30 days,154.75,8.85,False
+2025-06,MFIs,sub_standard,Sub-Standard Loans due between 31 to 180 days,32.0,1.83,True
+2025-06,MFIs,doubtful,Doubtful Loans due between 181 to 365 days,34.72,1.99,True
+2025-06,MFIs,bad,Bad Loan Loans due Above 365,82.21,4.7,True
+2025-06,MFIs,total,Existing loan to Borrower,1748.8,100.0,False
