@@ -1,1 +1,1 @@
-"""MFI Portfolio Analytics."""
+"""Kisti: microfinance analytics for Bangladesh."""

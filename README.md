@@ -1,9 +1,10 @@
-# MFI Portfolio Analytics
+# Kisti: Microfinance Analytics for Bangladesh
 
 [![CI](https://github.com/khalilurrrahmanridoykhan/kisti-microfinance-analytics/actions/workflows/ci.yml/badge.svg)](https://github.com/khalilurrrahmanridoykhan/kisti-microfinance-analytics/actions/workflows/ci.yml)
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
 
-Microfinance analytics for Bangladesh, in two clearly separated layers:
+*Kisti* (কিস্তি) is the Bengali word for a loan instalment, the unit every microfinance loan is
+repaid in. This project analyses Bangladesh's microfinance sector in two clearly separated layers:
 
 | Layer | Data | What it can claim |
 |---|---|---|
