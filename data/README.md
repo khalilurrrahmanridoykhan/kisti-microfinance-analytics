@@ -5,7 +5,7 @@ Two layers, kept in separate folders and never mixed in one table or chart.
 | Folder | Layer | Status |
 |---|---|---|
 | `data/real/raw/` | Source PDFs fetched from the publisher (not committed) | Fetched by `make fetch` |
-| `data/real/processed/` | Tidy tables extracted from the June 2025 report, with attribution | Done (MF1), see [docs/extraction-notes.md](../docs/extraction-notes.md) |
+| `data/real/processed/` | Tidy tables extracted from the June 2025 report and the census, with attribution | Done (MF1, MF2), see [docs/extraction-notes.md](../docs/extraction-notes.md) |
 | `data/synthetic/` | Generated loan, client and savings records, **not real people** | Phase MF4 |
 
 ## Real sources
@@ -18,8 +18,9 @@ missing or its checksum differs, and refuses a download whose checksum does not 
 |---|---|---|
 | *Microfinance in Bangladesh (Annual Statistics), June 2025* (394 pages) | Microcredit Regulatory Authority (MRA) | Main analysis: per-MFI tables for 693 MFIs, division and district coverage, sector series, loan-loss classification |
 | *Microfinance in Bangladesh (Annual Statistics), June 2024* (394 pages) | MRA | Two-year comparison (MF3) |
+| *Population and Housing Census 2022*, district (Admin 2) tables, 64 districts | Bangladesh Bureau of Statistics, via the Humanitarian Data Exchange (UN in Bangladesh) | District population and account-ownership context for coverage per 1,000 people (MF2) |
 
-**Terms.** The reports carry an MRA copyright notice and state no open licence. The PDFs are
+**Terms.** The census tables are listed on HDX as public domain (CC0); attribute BBS. The MRA reports carry an MRA copyright notice and state no open licence. The PDFs are
 therefore not committed here. The processed tables contain published numbers only and are
 attributed to MRA; if the publisher objects, they will be removed.
 

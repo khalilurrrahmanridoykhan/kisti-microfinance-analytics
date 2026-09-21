@@ -7,7 +7,7 @@ only when its "done when" gate passes.
 |---|---|---|---|
 | MF0 | Repo setup, checksum-verified data fetch, data provenance, glossary | Real | Done |
 | MF1 | MRA tables extracted to tidy CSVs, with reconciliation tests against printed totals | Real | Done |
-| MF2 | Sector analysis: concentration, sustainability, scale efficiency, pricing, funding mix, outreach, district coverage | Real | Planned |
+| MF2 | Sector analysis: concentration, sustainability, scale efficiency, pricing, funding mix, outreach, district coverage | Real | Done, see [RESULTS.md](../RESULTS.md) |
 | MF3 | Sector trend 2015-16 to 2024-25 and June 2024 to June 2025 movement per MFI | Real | Planned |
 | MF4 | Seeded synthetic loan book, calibrated to the real sector and checked by tests | Synthetic | Planned |
 | MF5 | Portfolio analytics in SQL and Python: PAR, roll rates, vintage curves, collection, clients, savings | Synthetic | Planned |

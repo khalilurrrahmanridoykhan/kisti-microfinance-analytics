@@ -19,9 +19,18 @@ provisioning), and an interactive web dashboard.
 
 ## Status
 
-Phases MF0 (repo, data provenance, glossary) and MF1 (the MRA June 2025 tables extracted to
-tested CSVs) are complete. Analysis begins in MF2. See the [roadmap](docs/roadmap.md). No
-analysis results are published yet, and none are claimed.
+Phases MF0 (repo, data provenance, glossary), MF1 (the MRA June 2025 tables extracted to tested
+CSVs) and MF2 (sector analysis on the real data) are complete. See the [roadmap](docs/roadmap.md).
+
+**[RESULTS.md](RESULTS.md)** has the findings, each with its figure and table. In June 2025:
+
+- Four institutions (BRAC, ASA, BURO Bangladesh, TMSS) hold half of all loans outstanding.
+- About one MFI in four does not cover its costs, but together they hold 2% of the loans; the
+  problem is among small institutions.
+- Larger MFIs lend more per employee but do not run more cheaply per taka lent.
+- MFI borrowers per 1,000 people range from 81 (Cox's Bazar) to 474 (Cumilla) across districts.
+
+These are findings from published aggregates, with the limits stated in the results.
 
 ## What this project cannot tell you
 
@@ -59,7 +68,8 @@ Conventions, units and missing-value handling are in the
 ```sh
 make setup   # create .venv and install the package with dev tools
 make fetch   # download the MRA reports into data/real/raw/ and verify their checksums
-make extract # read the June 2025 tables into data/real/processed/ (about a minute)
+make extract # read the June 2025 tables and census populations into data/real/processed/
+make analyse # run the sector analysis, write RESULTS.md and results/
 make test    # run the tests
 make lint    # ruff
 ```
@@ -68,7 +78,7 @@ Requires Python 3.11 or newer.
 
 ## Data
 
-Sources, checksums and terms are in [`data/README.md`](data/README.md) and
+Sources (MRA annual statistics, Census 2022 district tables), checksums and terms are in [`data/README.md`](data/README.md) and
 [`data/source-manifest.json`](data/source-manifest.json). The MRA reports carry a copyright
 notice and no open licence, so the PDFs are fetched, never committed; extracted tables
 contain published numbers only and are attributed to MRA.
@@ -78,7 +88,8 @@ contain published numbers only and are attributed to MRA.
 ```
 data/          provenance, real (raw, processed) and synthetic data
 docs/          roadmap, glossary, data dictionary, extraction notes
-src/kisti/     package code (fetch, extract)
+src/kisti/     package code (fetch, extract, analysis)
+results/       tables, figures and summary numbers written by `make analyse`
 scripts/       cross-check of the extracted tables against a second method
 tests/         tests, including reconciliation of the extracted tables
 ```
