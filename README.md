@@ -20,9 +20,20 @@ provisioning), and an interactive web dashboard.
 ## Status
 
 Phases MF0 (repo, data provenance, glossary), MF1 (the MRA June 2025 tables extracted to tested
-CSVs) and MF2 (sector analysis on the real data) are complete. See the [roadmap](docs/roadmap.md).
+CSVs), MF2 (sector analysis on the real data) and MF9a (the dashboard below) are complete. See
+the [roadmap](docs/roadmap.md).
 
-**[RESULTS.md](RESULTS.md)** has the findings, each with its figure and table. In June 2025:
+## Dashboard
+
+**[Open the live dashboard](https://khalilurrrahmanridoykhan.github.io/kisti-microfinance-analytics/)**
+— sector overview, an MFI benchmark table (all 644 active MFIs, searchable and sortable),
+district coverage, and the methods and limits behind every number. A static React + TypeScript
+app in [`web/`](web/), reading only the JSON in `web/public/data/`; no synthetic data on it.
+Design notes, including the palette validation, are in
+[docs/dashboard-design.md](docs/dashboard-design.md).
+
+**[RESULTS.md](RESULTS.md)** has the same findings as plain text, each with its figure and
+table. In June 2025:
 
 - Four institutions (BRAC, ASA, BURO Bangladesh, TMSS) hold half of all loans outstanding.
 - About one MFI in four does not cover its costs, but together they hold 2% of the loans; the
@@ -70,6 +81,9 @@ make setup   # create .venv and install the package with dev tools
 make fetch   # download the MRA reports into data/real/raw/ and verify their checksums
 make extract # read the June 2025 tables and census populations into data/real/processed/
 make analyse # run the sector analysis, write RESULTS.md and results/
+make webdata # regenerate web/public/data/ for the dashboard
+
+cd web && npm ci && npm run dev   # run the dashboard locally (needs Node 22)
 make test    # run the tests
 make lint    # ruff
 ```
@@ -87,9 +101,10 @@ contain published numbers only and are attributed to MRA.
 
 ```
 data/          provenance, real (raw, processed) and synthetic data
-docs/          roadmap, glossary, data dictionary, extraction notes
-src/kisti/     package code (fetch, extract, analysis)
+docs/          roadmap, glossary, data dictionary, extraction notes, dashboard design
+src/kisti/     package code (fetch, extract, analysis, webdata)
 results/       tables, figures and summary numbers written by `make analyse`
+web/           the dashboard (React + TypeScript + Vite), reading web/public/data/
 scripts/       cross-check of the extracted tables against a second method
 tests/         tests, including reconciliation of the extracted tables
 ```

@@ -39,6 +39,12 @@ make fetch   # download the source PDFs and verify their checksums
 make extract # rebuild data/real/processed/ from the PDF
 make crosscheck  # compare the tables with a second extraction method (needs poppler)
 make analyse # rerun the sector analysis and regenerate RESULTS.md and results/
+make webdata # regenerate web/public/data/ for the dashboard
+
+# Dashboard (web/), needs Node 22
+make web-install  # npm ci
+make web-test      # eslint, tsc --noEmit, vitest
+make web-build     # production build to web/dist
 make test    # run the tests
 make lint    # ruff
 ```

@@ -14,7 +14,8 @@ only when its "done when" gate passes.
 | MF6 | Finance models and Excel workbooks: flat vs declining rate, break-even, provisioning, branch MIS | Synthetic | Planned |
 | MF7 | Climate-shock stress test on the synthetic portfolio (optional) | Synthetic | Planned |
 | MF8 | Digital collection and fintech-partner pack: product spec, partner scorecard, reconciliation prototype (optional) | Synthetic | Planned |
-| MF9 | Interactive web dashboard: sector overview, MFI benchmark, district coverage, synthetic portfolio monitor | Both, labeled | Planned |
+| MF9a | Interactive web dashboard: sector overview, MFI benchmark, district coverage, methods | Real | Done, live at the Pages URL below |
+| MF9b | Add the synthetic portfolio monitor tab once MF4/MF5 exist | Synthetic | Planned |
 | MF10 | Data API and command-line tool (optional) | Both, labeled | Planned |
 
 The first three phases are a complete project on their own: they use only published data

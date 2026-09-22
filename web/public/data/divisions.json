@@ -1,0 +1,74 @@
+[
+  {
+    "division": "Rajshahi",
+    "population": 20353116,
+    "members": 6780091,
+    "borrowers": 5550209,
+    "loan_outstanding_bdt": 245234675973,
+    "borrowers_per_1000": 272.6957877113264,
+    "loan_outstanding_per_person_bdt": 12048.999080681308
+  },
+  {
+    "division": "Khulna",
+    "population": 17415924,
+    "members": 5963854,
+    "borrowers": 4536688,
+    "loan_outstanding_bdt": 200629822801,
+    "borrowers_per_1000": 260.4908014068045,
+    "loan_outstanding_per_person_bdt": 11519.9068852735
+  },
+  {
+    "division": "Rangpur",
+    "population": 17610955,
+    "members": 5123178,
+    "borrowers": 4247169,
+    "loan_outstanding_bdt": 168589950115,
+    "borrowers_per_1000": 241.16630813036545,
+    "loan_outstanding_per_person_bdt": 9573.015779950605
+  },
+  {
+    "division": "Barishal",
+    "population": 9100104,
+    "members": 2452658,
+    "borrowers": 1897977,
+    "loan_outstanding_bdt": 90419468124,
+    "borrowers_per_1000": 208.56651748155846,
+    "loan_outstanding_per_person_bdt": 9936.091733017556
+  },
+  {
+    "division": "Chattogram",
+    "population": 33202357,
+    "members": 8268624,
+    "borrowers": 6229146,
+    "loan_outstanding_bdt": 394573110185,
+    "borrowers_per_1000": 187.61156022748625,
+    "loan_outstanding_per_person_bdt": 11883.888549990592
+  },
+  {
+    "division": "Dhaka",
+    "population": 44215759,
+    "members": 11472345,
+    "borrowers": 8089242,
+    "loan_outstanding_bdt": 505188719649,
+    "borrowers_per_1000": 182.9492964261905,
+    "loan_outstanding_per_person_bdt": 11425.53539901916
+  },
+  {
+    "division": "Mymensingh",
+    "population": 12225449,
+    "members": 2206367,
+    "borrowers": 1719982,
+    "loan_outstanding_bdt": 76966613569,
+    "borrowers_per_1000": 140.6886569155865,
+    "loan_outstanding_per_person_bdt": 6295.606285625992
+  },
+  {
+    "division": "Sylhet",
+    "population": 11034952,
+    "members": 1712104,
+    "borrowers": 1411656,
+    "loan_outstanding_bdt": 67199722902,
+    "borrowers_per_1000": 127.92588495174243,
+    "loan_outstanding_per_person_bdt": 6089.715922824132
+  }
+]
