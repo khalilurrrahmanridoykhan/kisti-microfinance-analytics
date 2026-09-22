@@ -1,0 +1,46 @@
+{
+  "reference_ceiling_pct": 24.0,
+  "reference_ceiling_note": "The press has reported a 24% ceiling on microcredit interest since 2019; MRA's own notification was not located, so the current value is unconfirmed. Used only as a reference line, never as a compliance check.",
+  "size_bands": [
+    {
+      "label": "< 10 million",
+      "min_bdt": null,
+      "max_bdt": 10000000.0
+    },
+    {
+      "label": "10-100 million",
+      "min_bdt": 10000000.0,
+      "max_bdt": 100000000.0
+    },
+    {
+      "label": "100 million-1 billion",
+      "min_bdt": 100000000.0,
+      "max_bdt": 1000000000.0
+    },
+    {
+      "label": "1-10 billion",
+      "min_bdt": 1000000000.0,
+      "max_bdt": 10000000000.0
+    },
+    {
+      "label": "10 billion +",
+      "min_bdt": 10000000000.0,
+      "max_bdt": null
+    }
+  ],
+  "screening_rule": {
+    "borrowing_threshold_pct": 50.0,
+    "note": "MFIs with operating self-sufficiency below 100% and borrowing at or above 50% of loan outstanding. A filter on financial-structure ratios, not a measure of delinquency; reported as counts only, never as a named list."
+  },
+  "coverage": {
+    "mfis_in_basic": 693,
+    "mfis_active": 644,
+    "mfis_without_data": 40,
+    "active_with_ratios": 538,
+    "active_with_cost_ratios": 586,
+    "active_with_funds": 555,
+    "loans_share_with_ratios_pct": 94.84468763283198,
+    "loans_share_with_cost_ratios_pct": 97.06826723583939,
+    "loans_share_with_funds_pct": 95.87995522440006
+  }
+}
