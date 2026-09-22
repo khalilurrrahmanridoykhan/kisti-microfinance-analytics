@@ -34,7 +34,12 @@ jobs:
           node-version: "22"
           cache: npm
           cache-dependency-path: web/package-lock.json
-      - run: npm ci
+      # `npm ci` on Linux can hit a long-standing npm bug (npm/cli#4828) where it fails to
+      # install the platform-specific optional binary for Rollup/esbuild even though the
+      # lockfile lists it, because the lockfile was generated on a different OS. `npm install`
+      # takes a different resolution path that does not have this problem; the committed
+      # lockfile still pins every version, so this does not relax what gets installed.
+      - run: npm install
       - run: npx eslint src
       - run: npm run typecheck
       - run: npm test
