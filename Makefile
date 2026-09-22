@@ -1,4 +1,4 @@
-.PHONY: setup fetch extract crosscheck analyse webdata test lint
+.PHONY: setup fetch extract crosscheck analyse webdata web-install web-test web-build test lint
 
 setup:
 	python3 -m venv .venv
@@ -27,6 +27,16 @@ webdata:
 
 test:
 	.venv/bin/python -m pytest -q
+
+# The dashboard (web/): install once, then test or build
+web-install:
+	cd web && npm ci
+
+web-test:
+	cd web && npx eslint src && npm run typecheck && npm test
+
+web-build:
+	cd web && npm run build
 
 lint:
 	.venv/bin/ruff check .

@@ -110,3 +110,14 @@ Written by `make analyse` (phase MF2). Every figure in `RESULTS.md` has its tabl
 | `borrowers_per_1000` | MFI borrowers per 1,000 people in the district (Census 2022 population) |
 
 `results/summary.json` holds the headline numbers that the tests recompute independently.
+
+## Dashboard data (`web/public/data/`)
+
+Written by `make webdata` (`src/kisti/webdata`), reshaping the same MF2 analysis into JSON
+for the dashboard in `web/`. `meta.json`, `mfis.json` and `districts.json` are checked
+against a field-by-field schema on both the Python side (`src/kisti/webdata/schema.py`,
+tested in `tests/test_webdata.py`) and the TypeScript side (`web/src/lib/schema.ts`, tested
+in `web/src/lib/schema.test.ts` and re-checked at runtime by `loadAppData`). `sector.json`
+carries the same tables as `results/tables/`, reshaped for the dashboard's charts, and
+`methods.json` carries the size-band definitions, the screening-rule note and the interest-
+rate reference note shown on the dashboard's Methods tab.
