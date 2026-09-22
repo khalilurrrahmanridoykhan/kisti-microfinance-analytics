@@ -1,4 +1,4 @@
-.PHONY: setup fetch extract crosscheck analyse test lint
+.PHONY: setup fetch extract crosscheck analyse webdata test lint
 
 setup:
 	python3 -m venv .venv
@@ -20,6 +20,10 @@ crosscheck:
 # Run the sector analysis: writes RESULTS.md, results/tables, results/figures and results/summary.json
 analyse:
 	.venv/bin/python -m kisti.analysis
+
+# Export the analysis as JSON for the dashboard into web/public/data/
+webdata:
+	.venv/bin/python -m kisti.webdata
 
 test:
 	.venv/bin/python -m pytest -q
