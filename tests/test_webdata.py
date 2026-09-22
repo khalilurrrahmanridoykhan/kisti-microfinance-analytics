@@ -112,15 +112,33 @@ def test_committed_manifest_lists_exactly_the_committed_files(committed_manifest
     assert committed_manifest == on_disk
 
 
+def assert_json_close(committed, fresh, path: str = "") -> None:
+    """Recursive equality that tolerates the last-bit floating-point differences that k-means and
+    silhouette_score can produce across BLAS backends (observed between macOS/Accelerate and the
+    OpenBLAS used in CI): same clusters, numerically equivalent sums, different rounding."""
+    if isinstance(committed, float) or isinstance(fresh, float):
+        assert committed == pytest.approx(fresh, rel=1e-9, abs=1e-9), path
+    elif isinstance(committed, dict):
+        assert isinstance(fresh, dict) and committed.keys() == fresh.keys(), path
+        for key in committed:
+            assert_json_close(committed[key], fresh[key], f"{path}.{key}")
+    elif isinstance(committed, list):
+        assert isinstance(fresh, list) and len(committed) == len(fresh), path
+        for i, (c, f) in enumerate(zip(committed, fresh)):
+            assert_json_close(c, f, f"{path}[{i}]")
+    else:
+        assert committed == fresh, path
+
+
 def test_committed_files_are_current(committed_manifest, datasets):
-    """Every value except `generated_at` must match a fresh export byte for byte."""
+    """Every value except `generated_at` must match a fresh export, up to floating-point noise."""
     for dataset in datasets:
         committed = json.loads((OUT / f"{dataset.name}.json").read_text(encoding="utf-8"))
         fresh = json.loads(json.dumps(deep_clean(dataset.payload)))
         if isinstance(committed, dict) and "generated_at" in committed:
             committed = {**committed, "generated_at": None}
             fresh = {**fresh, "generated_at": None}
-        assert committed == fresh, dataset.name
+        assert_json_close(committed, fresh, dataset.name)
 
 
 def test_schema_module_covers_every_top_level_field_used_by_the_export():
