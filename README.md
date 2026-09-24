@@ -25,12 +25,13 @@ the [roadmap](docs/roadmap.md).
 
 ## Dashboard
 
-**[Open the live dashboard](https://khalilurrrahmanridoykhan.github.io/kisti-microfinance-analytics/)**
-— sector overview, an MFI benchmark table (all 644 active MFIs, searchable and sortable),
+**[Open the live dashboard](https://kisti.krrkhan.com)** (mirrored on
+[GitHub Pages](https://khalilurrrahmanridoykhan.github.io/kisti-microfinance-analytics/)) —
+sector overview, an MFI benchmark table (all 644 active MFIs, searchable and sortable),
 district coverage, and the methods and limits behind every number. A static React + TypeScript
 app in [`web/`](web/), reading only the JSON in `web/public/data/`; no synthetic data on it.
-Design notes, including the palette validation, are in
-[docs/dashboard-design.md](docs/dashboard-design.md).
+Both copies redeploy automatically on every push to `main`. Design notes, including the
+palette validation, are in [docs/dashboard-design.md](docs/dashboard-design.md).
 
 **[RESULTS.md](RESULTS.md)** has the same findings as plain text, each with its figure and
 table. In June 2025:
