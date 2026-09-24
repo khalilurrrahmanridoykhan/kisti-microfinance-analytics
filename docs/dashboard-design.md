@@ -26,9 +26,12 @@ a shell, read anything else on the box, or reach any of the other sites hosted t
 The VPS account (`data`) that key logs in as has no sudo access to nginx or the filesystem
 outside its own app directories, by design (it is a shared box hosting several unrelated
 sites). Content deploys are therefore fully automated; the one-time nginx vhost and TLS
-certificate for `kisti.krrkhan.com` were set up out of band by whoever holds root on that box,
-following the same pattern as the other static site there (`phframe-landing`): an nginx
-`server` block with `root` pointing at the app directory, plus `certbot --nginx`.
+certificate for `kisti.krrkhan.com` were set up out of band (2026-09-24) by whoever holds root
+on that box, following the same pattern as the other static site there (`phframe-landing`): an
+nginx `server` block with `root` pointing at the app directory, then
+`certbot --nginx -d kisti.krrkhan.com` for a Let's Encrypt certificate (auto-renewing, expires
+2026-12-23 absent renewal) and the HTTP→HTTPS redirect. DNS for `kisti.krrkhan.com` points at
+that VPS's own IP. None of this repeats on future deploys — only the content changes.
 
 ## Palette validation
 
