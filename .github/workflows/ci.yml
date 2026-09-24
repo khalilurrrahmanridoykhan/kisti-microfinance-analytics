@@ -51,6 +51,16 @@ jobs:
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         with:
           path: web/dist
+      # A second build, with assets referenced from the domain root ("/...") instead of the
+      # GitHub Pages subpath ("/kisti-microfinance-analytics/..."), for the custom-domain copy.
+      - run: npx vite build --base=/ --outDir dist-vps
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+      - uses: actions/upload-artifact@v4
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        with:
+          name: dist-vps
+          path: web/dist-vps
+          retention-days: 1
 
   # Deploys the dashboard built above to GitHub Pages. Only on pushes to main (never on a PR),
   # and only after both jobs above pass, so a broken build or a failing test is never published.
@@ -67,3 +77,26 @@ jobs:
     steps:
       - id: deployment
         uses: actions/deploy-pages@v4
+
+  # Deploys the same build to kisti.krrkhan.com over rsync/SSH, using a deploy key that is
+  # restricted (via rrsync, see docs/dashboard-design.md) to only the dashboard's own directory
+  # on that server. Runs after `deploy` so a Pages rollback would also block this.
+  deploy-vps:
+    needs: [test, web, deploy]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist-vps
+          path: dist-vps
+      - run: |
+          umask 077
+          mkdir -p ~/.ssh
+          printf '%s\n' "${{ secrets.KISTI_VPS_SSH_KEY }}" > ~/.ssh/kisti_deploy
+          chmod 600 ~/.ssh/kisti_deploy
+          ssh-keyscan -H "${{ secrets.KISTI_VPS_HOST }}" >> ~/.ssh/known_hosts 2>/dev/null
+      - run: |
+          rsync -avz --delete \
+            -e "ssh -i ~/.ssh/kisti_deploy -o UserKnownHostsFile=~/.ssh/known_hosts" \
+            dist-vps/ "${{ secrets.KISTI_VPS_USER }}@${{ secrets.KISTI_VPS_HOST }}:/"

@@ -11,6 +11,7 @@ dist/
 # Web app (added in a later phase)
 node_modules/
 web/dist/
+web/dist-vps/
 
 # Notebooks
 .ipynb_checkpoints/
