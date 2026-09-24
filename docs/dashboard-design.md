@@ -1,8 +1,34 @@
 # Dashboard design notes (phase MF9a)
 
 The dashboard is a static React + TypeScript app in `web/`, built with Vite, deployed to
-GitHub Pages. It reads only the JSON files in `web/public/data/`, generated from the real
-MRA and Census tables by `make webdata` — no synthetic data appears anywhere in it.
+**two** places on every push to main: GitHub Pages (the canonical, always-current copy) and
+`kisti.krrkhan.com` (a custom-domain mirror on the owner's own VPS). It reads only the JSON
+files in `web/public/data/`, generated from the real MRA and Census tables by `make webdata` —
+no synthetic data appears anywhere in it.
+
+## Deployment
+
+Two builds come out of the same source, differing only in how asset URLs are written, because
+Pages serves the app at a subpath and the custom domain serves it at the root:
+
+| Target | Command | Base path | Where |
+|---|---|---|---|
+| GitHub Pages | `npm run build` → `web/dist` | `/kisti-microfinance-analytics/` | `actions/deploy-pages` |
+| `kisti.krrkhan.com` | `npm run build:vps` → `web/dist-vps` | `/` | `rsync` over SSH |
+
+CI (`.github/workflows/ci.yml`) builds both on every push to main, publishes Pages first, then
+runs `deploy-vps`, which rsyncs `dist-vps/` to `/home/data/apps/kisti-microfinance-analytics/`
+on the VPS using a dedicated SSH key stored as the `KISTI_VPS_SSH_KEY` repo secret
+(`KISTI_VPS_HOST`, `KISTI_VPS_USER` alongside it). That key is restricted server-side, in
+`~/.ssh/authorized_keys`, to running `rrsync` against that one directory only — it cannot open
+a shell, read anything else on the box, or reach any of the other sites hosted there.
+
+The VPS account (`data`) that key logs in as has no sudo access to nginx or the filesystem
+outside its own app directories, by design (it is a shared box hosting several unrelated
+sites). Content deploys are therefore fully automated; the one-time nginx vhost and TLS
+certificate for `kisti.krrkhan.com` were set up out of band by whoever holds root on that box,
+following the same pattern as the other static site there (`phframe-landing`): an nginx
+`server` block with `root` pointing at the app directory, plus `certbot --nginx`.
 
 ## Palette validation
 
