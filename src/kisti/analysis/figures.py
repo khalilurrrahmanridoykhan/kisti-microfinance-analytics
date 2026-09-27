@@ -292,6 +292,32 @@ def groups(profile: pd.DataFrame, out: Path) -> None:
     save(fig, out)
 
 
+def ten_year_trend(series, out: Path) -> None:
+    """Branches, borrowers, loan outstanding and savings, each indexed to 100 in 2015-16, so
+    four series on very different scales can share one axis (never a dual-axis chart)."""
+    years = list(series.index)
+    fig, ax = plt.subplots(figsize=(7.2, 4.2))
+    panels = [
+        ("branches", "Branches", SERIES[0]),
+        ("borrowers", "Borrowers", SERIES[1]),
+        ("loan_outstanding", "Loan outstanding", SERIES[2]),
+        ("savings", "Savings", SERIES[4]),
+    ]
+    for column, label, color in panels:
+        indexed = 100 * series[column] / series[column].iloc[0]
+        ax.plot(years, indexed, color=color, linewidth=2, marker="o", markersize=4, label=label)
+    ax.set_ylabel("2015-16 = 100")
+    ax.set_title("Savings and loans grew faster than branches or borrowers over ten years")
+    ax.tick_params(axis="x", rotation=30)
+    ax.legend(loc="upper left", ncol=2, fontsize=8.5, frameon=False)
+    caption(
+        fig,
+        "Each series indexed to its own 2015-16 value = 100, so growth rates are comparable on one axis. "
+        "MFIs only. Source: MRA annual statistics, June 2025, Table 1.3.",
+    )
+    save(fig, out)
+
+
 def all_figures(context: dict, outdir: Path) -> dict[str, str]:
     """Write every figure and return {name: filename}."""
     active = context["active"]
@@ -305,6 +331,7 @@ def all_figures(context: dict, outdir: Path) -> dict[str, str]:
         "outreach": "07_outreach_by_size.png",
         "districts": "08_districts_borrowers_per_1000.png",
         "groups": "09_peer_groups.png",
+        "trend": "10_ten_year_trend.png",
     }
     lorenz(active, outdir / files["lorenz"])
     oss_by_band(context["oss_band"], outdir / files["oss"])
@@ -317,6 +344,7 @@ def all_figures(context: dict, outdir: Path) -> dict[str, str]:
         context["districts"], context["geo"]["national_borrowers_per_1000"], outdir / files["districts"]
     )
     groups(context["groups"], outdir / files["groups"])
+    ten_year_trend(context["ten_year_series"], outdir / files["trend"])
     return files
 
 

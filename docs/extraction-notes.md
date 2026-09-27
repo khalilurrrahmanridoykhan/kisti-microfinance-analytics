@@ -114,6 +114,10 @@ matches the second method, so it is what the report prints.
 
 **Units and conventions** are in [data-dictionary.md](data-dictionary.md).
 
+## The June 2024 report (phase MF3): what was and was not extracted
+
+`mra_annual_statistics_2024-06.pdf` is fetched and checksummed (see `data/README.md`) but only partially extracted. Its **Basic Information of MFIs** table (chapter 5) is printed rotated 90 degrees, unlike the June 2025 edition's — plain-text extraction reads it as reversed vertical text (`sIFM\nfo noitamrofnI\ncisaB...`), the same phenomenon as the June 2025 report's Table 1.3 trend table, but across roughly 70 pages of per-MFI rows instead of one small table. Its Positions, Cost and Risk tables keep the normal orientation and the same `(As on 30 June 2024)` heading pattern as June 2025, but use different column pixel positions, so phase MF1's calibrated `GridTable` definitions do not transfer without their own recalibration (confirmed by running them directly against the 2024 pages: most rows come back with `licence number not found`). None of this was done for phase MF3, since the June 2025 report's own ten-year series (Table 1.3) and its Jun-24/Jun-25 fund-composition columns already cover this phase's two findings (the ten-year trend and the funding-mix movement) without touching the second PDF at all. A full per-MFI June 2024 vs June 2025 comparison — beyond funding — would need someone to repeat phase MF1's calibration work against this second, differently-laid-out edition.
+
 ## Census district populations (added in MF2)
 
 `district_population.csv` comes from the Census 2022 district tables that UN in Bangladesh

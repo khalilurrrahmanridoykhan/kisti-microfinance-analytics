@@ -16,7 +16,19 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from . import concentration, data, efficiency, figures, funding, geography, outreach, peers, pricing, quality
+from . import (
+    concentration,
+    data,
+    efficiency,
+    figures,
+    funding,
+    geography,
+    outreach,
+    peers,
+    pricing,
+    quality,
+    trend,
+)
 from . import sustainability as sust
 from .style import setup
 
@@ -137,6 +149,9 @@ def compute() -> dict:
     ctx["districts"] = districts
     ctx["divisions"] = geography.by_division(districts)
     ctx["geo"] = geography.summary(districts)
+    ctx["ten_year_series"] = trend.ten_year_series()
+    ctx["growth"] = trend.growth_table()
+    ctx["npl_two_year"] = trend.npl_two_year()
     return ctx
 
 
@@ -158,9 +173,11 @@ def write_tables(ctx: dict, outdir: Path) -> None:
         "08_peer_group_silhouette": ctx["silhouettes"],
         "09_districts": ctx["districts"],
         "09_divisions": ctx["divisions"],
+        "10_growth": ctx["growth"],
     }
     for name, table in tables.items():
         table.to_csv(outdir / f"{name}.csv", index=False, lineterminator="\n", float_format="%.4f")
+    ctx["ten_year_series"].to_csv(outdir / "10_ten_year_series.csv", float_format="%.4f")
 
 
 def summary(ctx: dict) -> dict:
@@ -187,6 +204,13 @@ def summary(ctx: dict) -> dict:
         "national_borrowers_per_1000": float(ctx["geo"]["national_borrowers_per_1000"]),
         "n_groups": int(len(ctx["groups"])),
         "screening_flagged": ctx["screening"]["flagged"],
+        "branches_cagr_pct": float(ctx["growth"].set_index("metric").loc["branches", "cagr_pct"]),
+        "loan_outstanding_cagr_pct": float(
+            ctx["growth"].set_index("metric").loc["loan_outstanding", "cagr_pct"]
+        ),
+        "savings_cagr_pct": float(ctx["growth"].set_index("metric").loc["savings", "cagr_pct"]),
+        "npl_fy2023_24_pct": ctx["npl_two_year"]["fy2023_24_pct"],
+        "npl_fy2024_25_pct": ctx["npl_two_year"]["fy2024_25_pct"],
     }
 
 
@@ -208,6 +232,7 @@ def render(ctx: dict, files: dict[str, str]) -> str:
     ft, fs = ctx["funding_typical"], ctx["funding_shift"]
     os_, ot = ctx["outreach_sector"], ctx["outreach_typical"]
     geo, dist, div = ctx["geo"], ctx["districts"], ctx["divisions"]
+    growth, npl = ctx["growth"].set_index("metric"), ctx["npl_two_year"]
     groups, sil, scr = ctx["groups"], ctx["silhouettes"], ctx["screening"]
     band = ctx["oss_band"].set_index("size_band")
     lo = conc.loc["Loan outstanding"]
@@ -591,6 +616,40 @@ def render(ctx: dict, files: dict[str, str]) -> str:
         f"{geo['spearman_borrowers_account']:.2f}) and {rho_word(geo['spearman_borrowers_mobile'])} with mobile-banking accounts ({geo['spearman_borrowers_mobile']:.2f}). Borrowers are counts of loans",
         "held with MFIs, not distinct people, and the population is everyone, not adults; use the ranking, not the level.",
         "",
+        "## 10. Ten-year trend and two-year movement",
+        "",
+        fig(
+            "trend", "Ten-year trend of branches, borrowers, loan outstanding and savings, indexed to 2015-16"
+        ),
+        "",
+        md_table(
+            ctx["growth"],
+            {"value_2015_16": ",.1f", "value_2024_25": ",.1f", "cagr_pct": "+.1f"},
+            {
+                "metric": "Metric",
+                "value_2015_16": "2015-16",
+                "value_2024_25": "2024-25",
+                "cagr_pct": "CAGR",
+            },
+        ),
+        "",
+        f"Over the ten years to June 2025, loan outstanding and savings grew faster ({growth.loc['loan_outstanding', 'cagr_pct']:.1f}%",
+        f"and {growth.loc['savings', 'cagr_pct']:.1f}% a year) than the branch network or borrower count ({growth.loc['branches', 'cagr_pct']:.1f}%",
+        f"and {growth.loc['borrowers', 'cagr_pct']:.1f}% a year): the sector deepened its financial intermediation with existing infrastructure more than",
+        "it expanded physically. Figures are MFIs only (Grameen Bank, government schemes and banks are reported separately by MRA) and are the",
+        "report's own printed totals, not the sum of per-MFI rows used elsewhere in this document (see the extraction notes).",
+        "",
+        f'**Loan quality, one year to the next.** MRA\'s own text: "{npl["quote"]}" ({npl["source"]}). That is a',
+        f"{npl['change_pp']:+.2f} percentage-point rise in classified loans (sub-standard, doubtful and bad; watchful excluded from both figures) from",
+        f"{npl['fy2023_24_pct']:.2f}% in FY2023-24 to {npl['fy2024_25_pct']:.2f}% in FY2024-25 — the deterioration quantified in section 7's plausibility",
+        "checks and the funding-mix shift away from commercial-bank loans in section 5.",
+        "",
+        "**Per-MFI year-over-year, beyond funding.** The funding-mix change in section 5 already compares each MFI's June 2024 and June 2025 funds,",
+        "from columns printed side by side in the June 2025 report. A fuller per-MFI comparison (loan size, yield, OSS) would need the standalone",
+        "June 2024 report's own Basic, Positions, Cost and Risk tables; its Basic Information table is printed rotated 90 degrees (unlike June 2025's),",
+        "and the ratio tables use different column positions, so none of phase MF1's extractors transfer without their own fresh calibration. Not done",
+        "for this phase; the June 2024 PDF is fetched and available (see `data/README.md`) for a future phase that wants it.",
+        "",
         "## Limits and caveats",
         "",
         "- **Real data only, and only what MRA publishes.** No per-MFI delinquency, no client-level data, nothing on Grameen Bank's own accounts beyond MRA's sector series.",
@@ -600,7 +659,7 @@ def render(ctx: dict, files: dict[str, str]) -> str:
         "([Financial Express, 2021](https://thefinancialexpress.com.bd/economy/bangladesh/microcredit-regulator-forms-committee-to-cut-microloan-interest-rates-1614393568)). "
         "MRA's own notification was not located and the current value is unconfirmed, so it is used only as a reference line.",
         "- **Census population** is the 2022 Census district table from BBS, as published on the Humanitarian Data Exchange under CC0. The report date is June 2025.",
-        "- **Not yet done:** trends over time and the June 2024 comparison (phase MF3).",
+        "- **Not yet done:** a full per-MFI comparison against the standalone June 2024 report (section 10 explains why).",
         "",
         "Reproduce everything with `make analyse`.",
         "",
