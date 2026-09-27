@@ -218,6 +218,37 @@ have a moderate positive relationship with the share of people holding a financi
 0.47) and a weak positive relationship with mobile-banking accounts (0.25). Borrowers are counts of loans
 held with MFIs, not distinct people, and the population is everyone, not adults; use the ranking, not the level.
 
+## 10. Ten-year trend and two-year movement
+
+![Ten-year trend of branches, borrowers, loan outstanding and savings, indexed to 2015-16](results/figures/10_ten_year_trend.png)
+
+| Metric | 2015-16 | 2024-25 | CAGR |
+|---|---:|---:|---:|
+| branches | 16,204.0 | 27,113.0 | +5.9 |
+| employees | 122,335.0 | 234,380.0 | +7.5 |
+| members | 27.1 | 44.0 | +5.5 |
+| borrowers | 22.8 | 33.7 | +4.4 |
+| loan_disbursement | 776.0 | 2,770.4 | +15.2 |
+| loan_outstanding | 448.1 | 1,748.8 | +16.3 |
+| savings | 169.0 | 799.3 | +18.8 |
+
+Over the ten years to June 2025, loan outstanding and savings grew faster (16.3%
+and 18.8% a year) than the branch network or borrower count (5.9%
+and 4.4% a year): the sector deepened its financial intermediation with existing infrastructure more than
+it expanded physically. Figures are MFIs only (Grameen Bank, government schemes and banks are reported separately by MRA) and are the
+report's own printed totals, not the sum of per-MFI rows used elsewhere in this document (see the extraction notes).
+
+**Loan quality, one year to the next.** MRA's own text: "In the previous year, non-performing loans accounted for 8.09 percent of total outstanding, whereas in FY2024-25, classified loans alone reached 8.52 percent, excluding the watchful category." (MRA, Microfinance in Bangladesh (Annual Statistics) June-2025, chapter 2.2, printed page 28). That is a
++0.43 percentage-point rise in classified loans (sub-standard, doubtful and bad; watchful excluded from both figures) from
+8.09% in FY2023-24 to 8.52% in FY2024-25 — the deterioration quantified in section 7's plausibility
+checks and the funding-mix shift away from commercial-bank loans in section 5.
+
+**Per-MFI year-over-year, beyond funding.** The funding-mix change in section 5 already compares each MFI's June 2024 and June 2025 funds,
+from columns printed side by side in the June 2025 report. A fuller per-MFI comparison (loan size, yield, OSS) would need the standalone
+June 2024 report's own Basic, Positions, Cost and Risk tables; its Basic Information table is printed rotated 90 degrees (unlike June 2025's),
+and the ratio tables use different column positions, so none of phase MF1's extractors transfer without their own fresh calibration. Not done
+for this phase; the June 2024 PDF is fetched and available (see `data/README.md`) for a future phase that wants it.
+
 ## Limits and caveats
 
 - **Real data only, and only what MRA publishes.** No per-MFI delinquency, no client-level data, nothing on Grameen Bank's own accounts beyond MRA's sector series.
@@ -225,6 +256,6 @@ held with MFIs, not distinct people, and the population is everyone, not adults;
 - **Associations, not causes.** Rank correlations and group medians describe how measures move together across institutions.
 - **The 24% reference.** The press has reported a 24% ceiling on microcredit interest since 2019, with later proposals to lower it ([Financial Express, 2021](https://thefinancialexpress.com.bd/economy/bangladesh/microcredit-regulator-forms-committee-to-cut-microloan-interest-rates-1614393568)). MRA's own notification was not located and the current value is unconfirmed, so it is used only as a reference line.
 - **Census population** is the 2022 Census district table from BBS, as published on the Humanitarian Data Exchange under CC0. The report date is June 2025.
-- **Not yet done:** trends over time and the June 2024 comparison (phase MF3).
+- **Not yet done:** a full per-MFI comparison against the standalone June 2024 report (section 10 explains why).
 
 Reproduce everything with `make analyse`.
