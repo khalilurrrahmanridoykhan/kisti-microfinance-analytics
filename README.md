@@ -19,9 +19,9 @@ provisioning), and an interactive web dashboard.
 
 ## Status
 
-Phases MF0 (repo, data provenance, glossary), MF1 (the MRA June 2025 tables extracted to tested
-CSVs), MF2 (sector analysis on the real data) and MF9a (the dashboard below) are complete. See
-the [roadmap](docs/roadmap.md).
+Phases MF0 through MF3 (repo setup, the MRA tables extracted, the sector analysis, and the
+ten-year trend), MF9a and MF9a2 (the live dashboard below) are complete. See the
+[roadmap](docs/roadmap.md) for the full phase list and what each one covers.
 
 ## Dashboard
 
