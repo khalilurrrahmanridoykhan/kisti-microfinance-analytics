@@ -55,7 +55,7 @@ jobs:
       # GitHub Pages subpath ("/kisti-microfinance-analytics/..."), for the custom-domain copy.
       - run: npx vite build --base=/ --outDir dist-vps
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         with:
           name: dist-vps
