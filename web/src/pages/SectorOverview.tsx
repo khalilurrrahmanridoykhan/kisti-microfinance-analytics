@@ -7,6 +7,8 @@ import { StackedBars, type StackedSeries } from "../components/StackedBars";
 import { LorenzCurve } from "../components/LorenzCurve";
 import { KpiTile } from "../components/KpiTile";
 import { SectionCard } from "../components/SectionCard";
+import { DistrictMap } from "../components/DistrictMap";
+import { Icon, type IconName } from "../components/Icon";
 import { DataTable, type Column } from "../components/DataTable";
 import type { AppData } from "../lib/data";
 import { bandOrder, rangeByBand } from "../lib/bands";
@@ -62,7 +64,7 @@ const FUNDING_CHANGE_COLUMNS: Column<FundingChangeRow>[] = [
 ];
 
 export function SectorOverview({ data }: { data: AppData }) {
-  const { sector, mfis, methods } = data;
+  const { sector, mfis, methods, districts } = data;
   const order = useMemo(() => bandOrder(methods.size_bands).slice().reverse(), [methods]);
   const costRange = useMemo(() => rangeByBand(mfis, order, (m) => m.total_operating_cost_ratio), [mfis, order]);
   const loanSizeRange = useMemo(() => rangeByBand(mfis, order, (m) => m.avg_loan_size_bdt / 1000), [mfis, order]);
@@ -76,6 +78,38 @@ export function SectorOverview({ data }: { data: AppData }) {
   );
 
   const loanConcentration = sector.concentration.find((c) => c.measure === "Loan outstanding")!;
+  const lowest = districts.reduce((a, b) => (b.borrowers_per_1000 < a.borrowers_per_1000 ? b : a));
+  const highest = districts.reduce((a, b) => (b.borrowers_per_1000 > a.borrowers_per_1000 ? b : a));
+  const findings: { icon: IconName; value: string; text: string; link: string; href: string }[] = [
+    {
+      icon: "pie",
+      value: formatPercent(loanConcentration.top4_share_pct, 0),
+      text: `of all loans are held by just four MFIs: ${sector.largest_mfis.map((m) => m.name).join(", ")}.`,
+      link: "Concentration",
+      href: "#concentration",
+    },
+    {
+      icon: "alert",
+      value: formatPercent(sector.oss_overall.below_100_share_pct, 0),
+      text: `of MFIs do not cover their operating costs, but together they hold only ${formatPercent(sector.oss_overall.share_of_loans_in_below_100_pct)} of loans.`,
+      link: "Sustainability",
+      href: "#sustainability",
+    },
+    {
+      icon: "scale",
+      value: (sector.efficiency_correlations.find((e) => e.measure === "op_cost_ratio")?.spearman_with_size ?? 0).toFixed(2),
+      text: "rank correlation of size with cost per taka lent: larger MFIs do not run more cheaply.",
+      link: "Efficiency",
+      href: "#efficiency",
+    },
+    {
+      icon: "map",
+      value: `${lowest.borrowers_per_1000.toFixed(0)}–${highest.borrowers_per_1000.toFixed(0)}`,
+      text: `MFI borrowers per 1,000 people, from ${lowest.district} to ${highest.district}.`,
+      link: "Open the map",
+      href: "#map",
+    },
+  ];
   const coverage = [
     { label: "Operating cost ratios", n: sector.coverage.active_with_cost_ratios, share: sector.coverage.loans_share_with_cost_ratios_pct },
     { label: "Risk ratios (yield, OSS, ROA)", n: sector.coverage.active_with_ratios, share: sector.coverage.loans_share_with_ratios_pct },
@@ -87,16 +121,47 @@ export function SectorOverview({ data }: { data: AppData }) {
       <div className="kpi-grid">
         <KpiTile
           label="Active MFIs"
+          icon="institution"
           value={formatInt(sector.kpis.n_mfis)}
           detail={`of ${formatInt(sector.coverage.mfis_in_basic)} licensed`}
           title="Loans outstanding and borrowers both above zero"
         />
-        <KpiTile label="Loan outstanding" value={formatCompactTaka(sector.kpis.loan_outstanding_bdt)} detail="June 2025" />
-        <KpiTile label="Borrowers" value={formatInt(sector.kpis.borrowers_total)} detail="Active loan accounts" />
-        <KpiTile label="Members (clients)" value={formatInt(sector.kpis.clients_total)} detail="Enrolled members" />
-        <KpiTile label="Savings" value={formatCompactTaka(sector.kpis.savings_bdt)} detail="Clients' deposits" />
-        <KpiTile label="Branches" value={formatInt(sector.kpis.branches_total)} detail="Across all MFIs" />
+        <KpiTile label="Loan outstanding"
+          icon="banknote" value={formatCompactTaka(sector.kpis.loan_outstanding_bdt)} detail="June 2025" />
+        <KpiTile label="Borrowers"
+          icon="users" value={formatInt(sector.kpis.borrowers_total)} detail="Active loan accounts" />
+        <KpiTile label="Members (clients)"
+          icon="member" value={formatInt(sector.kpis.clients_total)} detail="Enrolled members" />
+        <KpiTile label="Savings"
+          icon="savings" value={formatCompactTaka(sector.kpis.savings_bdt)} detail="Clients' deposits" />
+        <KpiTile label="Branches"
+          icon="pin" value={formatInt(sector.kpis.branches_total)} detail="Across all MFIs" />
       </div>
+
+      <section className="findings" aria-label="Key findings">
+        {findings.map((f) => (
+          <a key={f.href} className="finding" href={f.href}>
+            <span className="finding-icon">
+              <Icon name={f.icon} size={20} />
+            </span>
+            <span className="finding-value">{f.value}</span>
+            <span className="finding-text">{f.text}</span>
+            <span className="finding-link">
+              {f.link} <Icon name="arrow" size={14} />
+            </span>
+          </a>
+        ))}
+      </section>
+
+      <SectionCard
+        id="map"
+        eyebrow="Interactive map"
+        title="Where microfinance reaches"
+        lead="Every district of Bangladesh, shaded by MFI coverage. Pick a division to zoom in, or a district to see its details."
+        className="card-feature"
+      >
+        <DistrictMap districts={districts} />
+      </SectionCard>
 
       <SectionCard
         title="Who is counted"
@@ -124,7 +189,7 @@ export function SectorOverview({ data }: { data: AppData }) {
         </ul>
       </SectionCard>
 
-      <SectionCard index={1} title="Concentration" lead="How unevenly loans, borrowers and savings are spread across MFIs.">
+      <SectionCard index={1} id="concentration" title="Concentration" lead="How unevenly loans, borrowers and savings are spread across MFIs.">
         <div className="split">
           <div className="split-chart">
             <LorenzCurve points={sector.lorenz} top4SharePct={loanConcentration.top4_share_pct} gini={loanConcentration.gini} />
@@ -146,7 +211,7 @@ export function SectorOverview({ data }: { data: AppData }) {
       </SectionCard>
 
       <div className="card-grid">
-        <SectionCard index={2} title="Sustainability" lead="Share of MFIs not covering their operating costs.">
+        <SectionCard index={2} id="sustainability" title="Sustainability" lead="Share of MFIs not covering their operating costs.">
           <HorizontalBars
             rows={sector.oss_by_band.map((b) => ({
               label: b.size_band,
@@ -162,7 +227,7 @@ export function SectorOverview({ data }: { data: AppData }) {
             {sector.oss_overall.oss_median.toFixed(1)}%; median ROA {sector.oss_overall.roa_median.toFixed(1)}%.
           </p>
         </SectionCard>
-        <SectionCard index={3} title="Efficiency and scale" lead="Operating cost per 100 taka of loans, by size band.">
+        <SectionCard index={3} id="efficiency" title="Efficiency and scale" lead="Operating cost per 100 taka of loans, by size band.">
           <RangeDots rows={costRange.map((r) => ({ ...r, label: r.label }))} domainMin={0} domainMax={30} unit="" formatValue={(v) => v.toFixed(1)} />
           <p className="card-caption">
             Operating cost per 100 taka of loans, by size band (median and middle half of MFIs, computed from the per-MFI
@@ -172,7 +237,7 @@ export function SectorOverview({ data }: { data: AppData }) {
         </SectionCard>
       </div>
 
-      <SectionCard index={4} title="Pricing" lead="Portfolio yield across MFIs, and how it relates to self-sufficiency.">
+      <SectionCard index={4} id="pricing" title="Pricing" lead="Portfolio yield across MFIs, and how it relates to self-sufficiency.">
         <div className="split split-even">
           <div>
             <Histogram
@@ -202,7 +267,7 @@ export function SectorOverview({ data }: { data: AppData }) {
         </div>
       </SectionCard>
 
-      <SectionCard index={5} title="Funding mix" lead="Where MFIs' funds come from, by size band.">
+      <SectionCard index={5} id="funding" title="Funding mix" lead="Where MFIs' funds come from, by size band.">
         <StackedBars
           series={FUNDING_SERIES}
           rows={sector.funding_by_band.map((b) => ({
@@ -227,7 +292,7 @@ export function SectorOverview({ data }: { data: AppData }) {
       </SectionCard>
 
       <div className="card-grid">
-        <SectionCard index={6} title="Outreach" lead="Average loan per borrower, by size band.">
+        <SectionCard index={6} id="outreach" title="Outreach" lead="Average loan per borrower, by size band.">
           <RangeDots rows={loanSizeRange} domainMin={0} domainMax={80} unit="K taka" formatValue={(v) => v.toFixed(0)} />
           <p className="card-caption">
             Average loan per borrower, thousand taka, by size band. Sector-wide average{" "}
@@ -236,7 +301,7 @@ export function SectorOverview({ data }: { data: AppData }) {
             {formatPercent(sector.outreach_sector.female_client_share_pct)} of clients.
           </p>
         </SectionCard>
-        <SectionCard index={7} title="Data quality" lead="MFIs failing each plausibility check.">
+        <SectionCard index={7} id="quality" title="Data quality" lead="MFIs failing each plausibility check.">
           <HorizontalBars
             rows={sector.quality_flags.map((f) => ({
               label: QUALITY_CHECK_SHORT_LABELS[f.check] ?? f.check,
@@ -256,7 +321,7 @@ export function SectorOverview({ data }: { data: AppData }) {
         </SectionCard>
       </div>
 
-      <SectionCard index={8} title="Peer groups and a screening rule">
+      <SectionCard index={8} id="peers" title="Peer groups and a screening rule">
         <p>
           K-means on seven standardised ratios gives {sector.peer_groups.length} groups (best silhouette{" "}
           {Math.max(...sector.peer_silhouette.map((s) => s.silhouette)).toFixed(2)} — a low score means the structure is weak;

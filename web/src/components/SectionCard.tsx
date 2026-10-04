@@ -2,19 +2,23 @@
  * matches RESULTS.md without being part of the heading text. */
 export function SectionCard({
   index,
+  id,
+  eyebrow,
   title,
   lead,
   className,
   children,
 }: {
   index?: number;
+  id?: string;
+  eyebrow?: string;
   title: string;
   lead?: React.ReactNode;
   className?: string;
   children: React.ReactNode;
 }) {
   return (
-    <section className={`card${className ? ` ${className}` : ""}`}>
+    <section id={id} className={`card${className ? ` ${className}` : ""}`}>
       <header className="card-header">
         {index !== undefined && (
           <span className="card-index" aria-hidden="true">
@@ -22,6 +26,7 @@ export function SectionCard({
           </span>
         )}
         <div>
+          {eyebrow && <p className="card-eyebrow">{eyebrow}</p>}
           <h2>
             {index !== undefined && <span className="sr-only">{index}. </span>}
             {title}

@@ -41,6 +41,16 @@
       "publisher": "Bangladesh Bureau of Statistics (BBS) and OCHA ROAP boundaries, redistributed by the geoBoundaries project (William & Mary geoLab).",
       "terms": "CC BY 3.0 IGO. Attribute BBS, OCHA ROAP and geoBoundaries.",
       "retrieved": "2026-10-04"
+    },
+    {
+      "path": "data/real/raw/geoboundaries_bgd_adm1_simplified.geojson",
+      "url": "https://media.githubusercontent.com/media/wmgeolab/geoBoundaries/main/releaseData/gbOpen/BGD/ADM1/geoBoundaries-BGD-ADM1_simplified.geojson",
+      "sha256": "bb91b74c7a7d8a690122b916f5e2f99606d2ce2f18ff938f49d80f15b4ba6aea",
+      "bytes": 92247,
+      "description": "Division (Admin 1) boundaries for all 8 divisions, geoBoundaries gbOpen release (simplified geometry). Drawn as the division outlines and zoom targets on the dashboard map by scripts/build_district_map.py.",
+      "publisher": "Bangladesh Bureau of Statistics (BBS) and OCHA ROAP boundaries, redistributed by the geoBoundaries project (William & Mary geoLab).",
+      "terms": "CC BY 3.0 IGO. Attribute BBS, OCHA ROAP and geoBoundaries.",
+      "retrieved": "2026-10-04"
     }
   ]
 }
