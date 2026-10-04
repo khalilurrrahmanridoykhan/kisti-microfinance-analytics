@@ -1,4 +1,4 @@
-.PHONY: setup fetch extract crosscheck analyse webdata web-install web-test web-build test lint
+.PHONY: setup fetch extract crosscheck analyse webdata districtmap web-install web-test web-build test lint
 
 setup:
 	python3 -m venv .venv
@@ -24,6 +24,10 @@ analyse:
 # Export the analysis as JSON for the dashboard into web/public/data/
 webdata:
 	.venv/bin/python -m kisti.webdata
+
+# Project the official district boundaries into the dashboard's map (web/public/geo/)
+districtmap:
+	.venv/bin/python scripts/build_district_map.py
 
 test:
 	.venv/bin/python -m pytest -q
