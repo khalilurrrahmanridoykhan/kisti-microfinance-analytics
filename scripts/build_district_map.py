@@ -105,11 +105,15 @@ def build(source: dict, names: set[str]) -> dict:
             if area > best_area:  # label at the centre of the largest ring's vertices
                 best_area = area
                 label_at = (sum(x for x, _ in points) / len(points), sum(y for _, y in points) / len(points))
-        districts.append({"district": name, "path": "".join(parts), "label": [round(label_at[0], 1), round(label_at[1], 1)]})
+        label = [round(label_at[0], 1), round(label_at[1], 1)]
+        districts.append({"district": name, "path": "".join(parts), "label": label})
 
     found = {d["district"] for d in districts}
     if found != names:
-        raise SystemExit(f"district names differ from districts.json: missing {sorted(names - found)}, extra {sorted(found - names)}")
+        raise SystemExit(
+            "district names differ from districts.json: "
+            f"missing {sorted(names - found)}, extra {sorted(found - names)}"
+        )
 
     return {
         "source": "Bangladesh Bureau of Statistics (BBS) and OCHA ROAP, via geoBoundaries (gbOpen BGD ADM2)",
@@ -127,7 +131,8 @@ def main() -> int:
     result = build(json.loads(SOURCE.read_text(encoding="utf-8")), names)
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(json.dumps(result, separators=(",", ":")) + "\n", encoding="utf-8")
-    print(f"wrote {OUT.relative_to(ROOT)} ({OUT.stat().st_size / 1024:.0f} KB, {len(result['districts'])} districts)")
+    size_kb = OUT.stat().st_size / 1024
+    print(f"wrote {OUT.relative_to(ROOT)} ({size_kb:.0f} KB, {len(result['districts'])} districts)")
     return 0
 
 
