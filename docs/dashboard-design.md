@@ -105,18 +105,31 @@ narrower screens, rather than stretching to fill an arbitrarily wide card.
 
 ## District map
 
-The District coverage page draws all 64 districts as a choropleth. The boundaries are the
-official Bangladesh Bureau of Statistics / OCHA ROAP district (Admin 2) polygons, taken from
-the geoBoundaries gbOpen release (CC BY 3.0 IGO, attributed under the map) and listed in
-`data/source-manifest.json` like every other source. `make districtmap`
+The Sector overview (home) page and the District coverage page both draw all 64 districts as
+a choropleth. The boundaries are the official Bangladesh Bureau of Statistics / OCHA ROAP
+district (Admin 2) and division (Admin 1) polygons, taken from the geoBoundaries gbOpen
+release (CC BY 3.0 IGO, attributed under the map) and listed in `data/source-manifest.json`
+like every other source. `make districtmap`
 (`scripts/build_district_map.py`, standard library only) projects them (equirectangular,
 x scaled by cos of the mid-latitude), simplifies each ring with Douglas-Peucker at 0.6 px,
 renames the five districts geoBoundaries still spells the pre-2018 way (Comilla, Chittagong,
-Jessore, Brahamanbaria, Nawabganj), and writes `web/public/geo/bd-districts.json`, about 130 KB
-(49 KB gzipped). The script fails if the names do not match `districts.json` exactly, and
+Jessore, Brahamanbaria, Nawabganj) and three divisions (Barisal, Chittagong, and "Rajshani", a
+typo in the release), and writes `web/public/geo/bd-districts.json`, about 150 KB, with a path,
+label point and bounding box for every district and division. The script fails if the names do not match `districts.json` exactly, and
 `tests/test_district_map.py` checks the committed file the same way. The file sits outside
 `web/public/data/` because it is geometry, not analysis output, and the page loads it on its
 own so the rest of the dashboard never waits for it.
+
+Viewers can narrow the map to an area: picking one of the eight divisions zooms the map to it
+(a CSS transform on one SVG group, so the zoom animates and strokes stay crisp through
+`vector-effect: non-scaling-stroke`), labels its districts with their values, fades the rest of
+the country, and swaps the side panel to that division's totals and a ranked list of its
+districts. From there a district can be zoomed to on its own, with its neighbours kept in view.
+A breadcrumb (Bangladesh › division › district) and a locator inset (the whole country, the
+division highlighted, the zoomed window dashed) keep the viewer oriented; the inset is also
+clickable. Label sizes are corrected for both the zoom and the map's on-screen width, so they
+stay readable on a phone. The data stops at districts: MRA publishes no figures for smaller
+areas, so there is no upazila level to zoom to. The zoom maths is in `src/lib/mapzoom.ts`.
 
 The map switches between five measures (borrowers per 1,000, loans per person, branches per
 100,000, average loan, account ownership). Each is split into five quantile classes, so every

@@ -29,7 +29,19 @@ const GEO = {
   source: "test",
   license: "CC BY 3.0 IGO",
   viewBox: [0, 0, 100, 100],
-  districts: DISTRICTS.map((d, i) => ({ district: d.district, path: `M${i * 10},0L${i * 10 + 9},0L${i * 10 + 9},9Z`, label: [i * 10 + 5, 5] })),
+  districts: DISTRICTS.map((d, i) => ({
+    district: d.district,
+    division: d.division,
+    path: `M${i * 10},0L${i * 10 + 9},0L${i * 10 + 9},9Z`,
+    label: [i * 10 + 5, 5],
+    bbox: [i * 10, 0, i * 10 + 9, 9],
+  })),
+  divisions: DISTRICTS.map((d, i) => ({
+    division: d.division,
+    path: `M${i * 10},0L${i * 10 + 9},0L${i * 10 + 9},9Z`,
+    label: [i * 10 + 5, 5],
+    bbox: [i * 10, 0, i * 10 + 9, 9],
+  })),
 };
 
 beforeEach(() => {
@@ -51,7 +63,7 @@ describe("DistrictMap", () => {
     const user = userEvent.setup();
     render(<DistrictMap districts={DISTRICTS} />);
     // (474 + 98 + 200) thousand borrowers over 3 million people.
-    expect(screen.getByText("Bangladesh")).toBeInTheDocument();
+    expect(screen.getByText("Bangladesh", { selector: ".district-panel-name" })).toBeInTheDocument();
     expect(screen.getByText("257")).toBeInTheDocument();
 
     await user.click(await screen.findByRole("button", { name: "Cumilla, Chattogram: 474" }));
@@ -66,6 +78,32 @@ describe("DistrictMap", () => {
     await screen.findByRole("button", { name: "Cumilla, Chattogram: 474" });
     await user.click(screen.getByRole("button", { name: "Account %" }));
     expect(screen.getByRole("button", { name: "Cumilla, Chattogram: 30%" })).toBeInTheDocument();
+  });
+
+  it("filters to a division: summarises it, lists only its districts, and zooms the map", async () => {
+    const user = userEvent.setup();
+    render(<DistrictMap districts={DISTRICTS} />);
+    await screen.findByRole("button", { name: "Cumilla, Chattogram: 474" });
+    await user.click(screen.getByRole("button", { name: "Chattogram" }));
+
+    expect(screen.getByText("Chattogram division", { selector: ".district-panel-name" })).toBeInTheDocument();
+    expect(screen.getByText("Districts in Chattogram")).toBeInTheDocument();
+    // Districts outside the division leave the tab order.
+    expect(screen.getByRole("button", { name: "Sylhet, Sylhet: 98" })).toHaveAttribute("tabindex", "-1");
+    expect(document.querySelector(".map-zoom")?.getAttribute("style")).toMatch(/scale\((?!1\))/);
+  });
+
+  it("zooms to a district from the division's picker and shows the breadcrumb", async () => {
+    const user = userEvent.setup();
+    render(<DistrictMap districts={DISTRICTS} />);
+    await screen.findByRole("button", { name: "Cumilla, Chattogram: 474" });
+    await user.click(screen.getByRole("button", { name: "Chattogram" }));
+    await user.selectOptions(screen.getByRole("combobox", { name: "Zoom to a district" }), "Cumilla");
+    expect(screen.getByRole("navigation", { name: "Map area" })).toHaveTextContent("Bangladesh›Chattogram division›Cumilla");
+    expect(document.querySelector(".district-panel-compare")).toHaveTextContent("1 of 1 in Chattogram");
+
+    await user.click(screen.getByRole("button", { name: /Show all Bangladesh/ }));
+    expect(screen.queryByRole("combobox", { name: "Zoom to a district" })).not.toBeInTheDocument();
   });
 
   it("explains the failure and points to the table when the map cannot load", async () => {
