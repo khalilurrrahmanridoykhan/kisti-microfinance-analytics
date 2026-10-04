@@ -1,5 +1,5 @@
-import { useMemo } from "react";
-import { HorizontalBars } from "../components/HorizontalBars";
+import { DistrictMap } from "../components/DistrictMap";
+import { SectionCard } from "../components/SectionCard";
 import { DataTable, type Column } from "../components/DataTable";
 import type { AppData } from "../lib/data";
 import { formatCompactTaka, formatInt } from "../lib/format";
@@ -48,28 +48,24 @@ const DIVISION_COLUMNS: Column<DivisionRecord>[] = [
 
 export function Districts({ data }: { data: AppData }) {
   const { districts, divisions, sector } = data;
-  const sorted = useMemo(() => [...districts].sort((a, b) => b.borrowers_per_1000 - a.borrowers_per_1000), [districts]);
 
   return (
     <div>
-      <section className="card">
-        <h2>9. Geography</h2>
-        <p>
-          MFI borrowers per 1,000 people, by district (Census 2022 population). Counts borrowers of MFIs, not distinct
+      <SectionCard
+        index={9}
+        title="Geography"
+        lead={
+          <>
+          MFI coverage by district, against Census 2022 population. Counts borrowers of MFIs, not distinct
           people; Grameen Bank, government schemes and banks are excluded. National average:{" "}
           {sector.geo_summary.national_borrowers_per_1000.toFixed(0)} per 1,000.
-        </p>
-        <HorizontalBars
-          rows={sorted.map((d) => ({ label: d.district, value: d.borrowers_per_1000, tooltip: d.division }))}
-          domainMax={500}
-          height={13}
-          reference={{ value: sector.geo_summary.national_borrowers_per_1000, label: "National" }}
-          formatValue={(v) => v.toFixed(0)}
-        />
-      </section>
+          </>
+        }
+      >
+        <DistrictMap districts={districts} />
+      </SectionCard>
 
-      <section className="card">
-        <h2>By division</h2>
+      <SectionCard title="By division">
         <DataTable
           columns={DIVISION_COLUMNS}
           rows={divisions}
@@ -78,10 +74,9 @@ export function Districts({ data }: { data: AppData }) {
           initialSort={{ key: "per1000", direction: "desc" }}
           pageSize={10}
         />
-      </section>
+      </SectionCard>
 
-      <section className="card">
-        <h2>All districts</h2>
+      <SectionCard title="All districts">
         <DataTable
           columns={DISTRICT_COLUMNS}
           rows={districts}
@@ -92,7 +87,7 @@ export function Districts({ data }: { data: AppData }) {
           initialSort={{ key: "per1000", direction: "desc" }}
           pageSize={20}
         />
-      </section>
+      </SectionCard>
     </div>
   );
 }

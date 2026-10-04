@@ -102,3 +102,36 @@ of silently mis-rendering.
 Checked at 375px width (phone) and 1280px (desktop) with no horizontal page scroll at either.
 Every chart's SVG caps its own `max-width` to its designed pixel size and scales down on
 narrower screens, rather than stretching to fill an arbitrarily wide card.
+
+## District map
+
+The District coverage page draws all 64 districts as a choropleth. The boundaries are the
+official Bangladesh Bureau of Statistics / OCHA ROAP district (Admin 2) polygons, taken from
+the geoBoundaries gbOpen release (CC BY 3.0 IGO, attributed under the map) and listed in
+`data/source-manifest.json` like every other source. `make districtmap`
+(`scripts/build_district_map.py`, standard library only) projects them (equirectangular,
+x scaled by cos of the mid-latitude), simplifies each ring with Douglas-Peucker at 0.6 px,
+renames the five districts geoBoundaries still spells the pre-2018 way (Comilla, Chittagong,
+Jessore, Brahamanbaria, Nawabganj), and writes `web/public/geo/bd-districts.json`, about 130 KB
+(49 KB gzipped). The script fails if the names do not match `districts.json` exactly, and
+`tests/test_district_map.py` checks the committed file the same way. The file sits outside
+`web/public/data/` because it is geometry, not analysis output, and the page loads it on its
+own so the rest of the dashboard never waits for it.
+
+The map switches between five measures (borrowers per 1,000, loans per person, branches per
+100,000, average loan, account ownership). Each is split into five quantile classes, so every
+shade holds about a fifth of the districts whatever the skew, and the legend shows each class's
+actual range. The shades are the palette's blue ramp as an ordinal scale, checked with the
+dataviz validator's `--ordinal` mode:
+
+```
+node scripts/validate_palette.js "#86b6ef,#5598e7,#2a78d6,#1c5cab,#104281" --mode light --ordinal
+node scripts/validate_palette.js "#1c5cab,#2a78d6,#5598e7,#86b6ef,#b7d3f6" --mode dark --surface "#232320" --ordinal
+```
+
+Both pass (monotone lightness, adjacent ΔL ≥ 0.06, light end 2.06:1 / 2.38:1 against the
+surface). In dark mode the ramp runs dark to light, so more always reads as more prominent.
+The "Bangladesh" figure beside the map is a ratio of district totals (for example, all
+borrowers over all people), not an average of district ratios; account ownership is weighted
+by population. Each district shape is a keyboard-focusable button labelled with its name,
+division and value, and the full table below the map stays the plain-text view.

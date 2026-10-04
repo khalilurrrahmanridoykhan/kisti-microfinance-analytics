@@ -83,7 +83,7 @@ export function DataTable<T>({
           />
         )}
         {extraControls}
-        <span style={{ color: "var(--text-muted)", fontSize: 12 }}>
+        <span className="table-count">
           {sorted.length.toLocaleString()} of {rows.length.toLocaleString()} rows
         </span>
       </div>
@@ -105,7 +105,7 @@ export function DataTable<T>({
                       <button
                         type="button"
                         onClick={() => toggleSort(column.key)}
-                        style={{ background: "none", border: "none", font: "inherit", color: "inherit", cursor: "pointer", padding: 0 }}
+                        className="sort-button"
                       >
                         {column.header}
                         {isSorted ? (sort.direction === "asc" ? " ↑" : " ↓") : ""}
@@ -130,7 +130,7 @@ export function DataTable<T>({
             ))}
             {visible.length === 0 && (
               <tr>
-                <td colSpan={columns.length} style={{ color: "var(--text-muted)" }}>
+                <td colSpan={columns.length} className="empty-cell">
                   No rows match.
                 </td>
               </tr>
@@ -139,14 +139,14 @@ export function DataTable<T>({
         </table>
       </div>
       {pageCount > 1 && (
-        <div className="control-row" style={{ marginTop: 8 }}>
-          <button type="button" onClick={() => setPage((p) => Math.max(0, p - 1))} disabled={clampedPage === 0}>
+        <div className="pager">
+          <button type="button" className="btn" onClick={() => setPage((p) => Math.max(0, p - 1))} disabled={clampedPage === 0}>
             Previous
           </button>
-          <span style={{ fontSize: 12, color: "var(--text-secondary)" }}>
+          <span className="pager-label">
             Page {clampedPage + 1} of {pageCount}
           </span>
-          <button type="button" onClick={() => setPage((p) => Math.min(pageCount - 1, p + 1))} disabled={clampedPage >= pageCount - 1}>
+          <button type="button" className="btn" onClick={() => setPage((p) => Math.min(pageCount - 1, p + 1))} disabled={clampedPage >= pageCount - 1}>
             Next
           </button>
         </div>

@@ -31,6 +31,16 @@
       "publisher": "Bangladesh Bureau of Statistics (BBS), census tables published on the Humanitarian Data Exchange by UN in Bangladesh (dataset updated 2024-03-31).",
       "terms": "Listed on HDX as Public Domain / No restrictions (CC0). Attribute BBS.",
       "retrieved": "2026-09-22"
+    },
+    {
+      "path": "data/real/raw/geoboundaries_bgd_adm2_simplified.geojson",
+      "url": "https://media.githubusercontent.com/media/wmgeolab/geoBoundaries/main/releaseData/gbOpen/BGD/ADM2/geoBoundaries-BGD-ADM2_simplified.geojson",
+      "sha256": "7dbdb186f3b8af10417147a99859196fcd89c619fb5c6ac3804251fb6b449b6a",
+      "bytes": 1686112,
+      "description": "District (Admin 2) boundaries for all 64 districts, geoBoundaries gbOpen release (simplified geometry, built 2023-12-12). Drawn as the district map on the dashboard by scripts/build_district_map.py.",
+      "publisher": "Bangladesh Bureau of Statistics (BBS) and OCHA ROAP boundaries, redistributed by the geoBoundaries project (William & Mary geoLab).",
+      "terms": "CC BY 3.0 IGO. Attribute BBS, OCHA ROAP and geoBoundaries.",
+      "retrieved": "2026-10-04"
     }
   ]
 }

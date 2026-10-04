@@ -6,6 +6,7 @@ import { ScatterPlot } from "../components/ScatterPlot";
 import { StackedBars, type StackedSeries } from "../components/StackedBars";
 import { LorenzCurve } from "../components/LorenzCurve";
 import { KpiTile } from "../components/KpiTile";
+import { SectionCard } from "../components/SectionCard";
 import { DataTable, type Column } from "../components/DataTable";
 import type { AppData } from "../lib/data";
 import { bandOrder, rangeByBand } from "../lib/bands";
@@ -74,113 +75,134 @@ export function SectorOverview({ data }: { data: AppData }) {
     [mfis],
   );
 
+  const loanConcentration = sector.concentration.find((c) => c.measure === "Loan outstanding")!;
+  const coverage = [
+    { label: "Operating cost ratios", n: sector.coverage.active_with_cost_ratios, share: sector.coverage.loans_share_with_cost_ratios_pct },
+    { label: "Risk ratios (yield, OSS, ROA)", n: sector.coverage.active_with_ratios, share: sector.coverage.loans_share_with_ratios_pct },
+    { label: "Fund composition", n: sector.coverage.active_with_funds, share: sector.coverage.loans_share_with_funds_pct },
+  ];
+
   return (
     <div>
       <div className="kpi-grid">
-        <KpiTile label="Active MFIs" value={formatInt(sector.kpis.n_mfis)} title="Loans outstanding and borrowers both above zero" />
-        <KpiTile label="Loan outstanding" value={formatCompactTaka(sector.kpis.loan_outstanding_bdt)} />
-        <KpiTile label="Borrowers" value={formatInt(sector.kpis.borrowers_total)} />
-        <KpiTile label="Members (clients)" value={formatInt(sector.kpis.clients_total)} />
-        <KpiTile label="Savings" value={formatCompactTaka(sector.kpis.savings_bdt)} />
-        <KpiTile label="Branches" value={formatInt(sector.kpis.branches_total)} />
+        <KpiTile
+          label="Active MFIs"
+          value={formatInt(sector.kpis.n_mfis)}
+          detail={`of ${formatInt(sector.coverage.mfis_in_basic)} licensed`}
+          title="Loans outstanding and borrowers both above zero"
+        />
+        <KpiTile label="Loan outstanding" value={formatCompactTaka(sector.kpis.loan_outstanding_bdt)} detail="June 2025" />
+        <KpiTile label="Borrowers" value={formatInt(sector.kpis.borrowers_total)} detail="Active loan accounts" />
+        <KpiTile label="Members (clients)" value={formatInt(sector.kpis.clients_total)} detail="Enrolled members" />
+        <KpiTile label="Savings" value={formatCompactTaka(sector.kpis.savings_bdt)} detail="Clients' deposits" />
+        <KpiTile label="Branches" value={formatInt(sector.kpis.branches_total)} detail="Across all MFIs" />
       </div>
 
-      <section className="card">
-        <h2>Who is counted</h2>
-        <p>
-          The Basic table lists {formatInt(sector.coverage.mfis_in_basic)} MFIs; {formatInt(sector.coverage.mfis_active)} are
-          "active" (loans and borrowers both above zero) and analysed here. The ratio tables cover fewer of them:
-        </p>
-        <ul>
-          <li>
-            Operating cost ratios: {formatInt(sector.coverage.active_with_cost_ratios)} MFIs (
-            {formatPercent(sector.coverage.loans_share_with_cost_ratios_pct)} of loans)
-          </li>
-          <li>
-            Risk ratios (yield, OSS, ROA): {formatInt(sector.coverage.active_with_ratios)} MFIs (
-            {formatPercent(sector.coverage.loans_share_with_ratios_pct)} of loans)
-          </li>
-          <li>
-            Fund composition: {formatInt(sector.coverage.active_with_funds)} MFIs ({formatPercent(sector.coverage.loans_share_with_funds_pct)} of loans)
-          </li>
+      <SectionCard
+        title="Who is counted"
+        lead={
+          <>
+            The Basic table lists {formatInt(sector.coverage.mfis_in_basic)} MFIs; {formatInt(sector.coverage.mfis_active)} are
+            "active" (loans and borrowers both above zero) and analysed here. The ratio tables cover fewer of them:
+          </>
+        }
+      >
+        <ul className="coverage-list">
+          {coverage.map((c) => (
+            <li key={c.label}>
+              <div className="coverage-row">
+                <span className="coverage-label">{c.label}</span>
+                <span className="coverage-value">
+                  {formatInt(c.n)} MFIs ({formatPercent(c.share)} of loans)
+                </span>
+              </div>
+              <div className="meter" aria-hidden="true">
+                <div className="meter-fill" style={{ width: `${Math.min(100, c.share)}%` }} />
+              </div>
+            </li>
+          ))}
         </ul>
-      </section>
+      </SectionCard>
 
-      <section className="card">
-        <h2>1. Concentration</h2>
-        <LorenzCurve
-          points={sector.lorenz}
-          top4SharePct={sector.concentration.find((c) => c.measure === "Loan outstanding")!.top4_share_pct}
-          gini={sector.concentration.find((c) => c.measure === "Loan outstanding")!.gini}
-        />
-        <DataTable
-          columns={CONCENTRATION_COLUMNS}
-          rows={sector.concentration}
-          getRowKey={(r) => r.measure}
-          caption="Concentration by measure"
-          pageSize={10}
-        />
-        <p className="card-caption">
-          {sector.largest_mfis.map((m) => m.name).join(", ")} hold {formatPercent(sector.concentration[0].top4_share_pct)} of loan
-          outstanding. June 2025, {sector.kpis.n_mfis} active MFIs.
-        </p>
-      </section>
+      <SectionCard index={1} title="Concentration" lead="How unevenly loans, borrowers and savings are spread across MFIs.">
+        <div className="split">
+          <div className="split-chart">
+            <LorenzCurve points={sector.lorenz} top4SharePct={loanConcentration.top4_share_pct} gini={loanConcentration.gini} />
+          </div>
+          <div>
+            <DataTable
+              columns={CONCENTRATION_COLUMNS}
+              rows={sector.concentration}
+              getRowKey={(r) => r.measure}
+              caption="Concentration by measure"
+              pageSize={10}
+            />
+            <p className="card-caption">
+              {sector.largest_mfis.map((m) => m.name).join(", ")} hold {formatPercent(sector.concentration[0].top4_share_pct)} of
+              loan outstanding. June 2025, {sector.kpis.n_mfis} active MFIs.
+            </p>
+          </div>
+        </div>
+      </SectionCard>
 
-      <section className="card">
-        <h2>2. Sustainability</h2>
-        <HorizontalBars
-          rows={sector.oss_by_band.map((b) => ({
-            label: b.size_band,
-            value: b.below_100_share_pct,
-            endLabel: `${b.below_100_share_pct.toFixed(0)}% (${b.below_100_count} of ${b.n_mfis})`,
-          }))}
-          domainMax={65}
-          valueSuffix="%"
-        />
-        <p className="card-caption">
-          Share of MFIs with operating self-sufficiency (OSS) below 100%, by size band. Below-100 MFIs hold only{" "}
-          {formatPercent(sector.oss_overall.share_of_loans_in_below_100_pct)} of loans. Median OSS is{" "}
-          {sector.oss_overall.oss_median.toFixed(1)}%; median ROA {sector.oss_overall.roa_median.toFixed(1)}%.
-        </p>
-      </section>
+      <div className="card-grid">
+        <SectionCard index={2} title="Sustainability" lead="Share of MFIs not covering their operating costs.">
+          <HorizontalBars
+            rows={sector.oss_by_band.map((b) => ({
+              label: b.size_band,
+              value: b.below_100_share_pct,
+              endLabel: `${b.below_100_share_pct.toFixed(0)}% (${b.below_100_count} of ${b.n_mfis})`,
+            }))}
+            domainMax={65}
+            valueSuffix="%"
+          />
+          <p className="card-caption">
+            Share of MFIs with operating self-sufficiency (OSS) below 100%, by size band. Below-100 MFIs hold only{" "}
+            {formatPercent(sector.oss_overall.share_of_loans_in_below_100_pct)} of loans. Median OSS is{" "}
+            {sector.oss_overall.oss_median.toFixed(1)}%; median ROA {sector.oss_overall.roa_median.toFixed(1)}%.
+          </p>
+        </SectionCard>
+        <SectionCard index={3} title="Efficiency and scale" lead="Operating cost per 100 taka of loans, by size band.">
+          <RangeDots rows={costRange.map((r) => ({ ...r, label: r.label }))} domainMin={0} domainMax={30} unit="" formatValue={(v) => v.toFixed(1)} />
+          <p className="card-caption">
+            Operating cost per 100 taka of loans, by size band (median and middle half of MFIs, computed from the per-MFI
+            export). Larger MFIs do not lend more cheaply per taka: the rank correlation with size is{" "}
+            {sector.efficiency_correlations.find((e) => e.measure === "op_cost_ratio")?.spearman_with_size.toFixed(2)}.
+          </p>
+        </SectionCard>
+      </div>
 
-      <section className="card">
-        <h2>3. Efficiency and scale</h2>
-        <RangeDots rows={costRange.map((r) => ({ ...r, label: r.label }))} domainMin={0} domainMax={30} unit="" formatValue={(v) => v.toFixed(1)} />
-        <p className="card-caption">
-          Operating cost per 100 taka of loans, by size band (median and middle half of MFIs, computed from the per-MFI
-          export). Larger MFIs do not lend more cheaply per taka: the rank correlation with size is{" "}
-          {sector.efficiency_correlations.find((e) => e.measure === "op_cost_ratio")?.spearman_with_size.toFixed(2)}.
-        </p>
-      </section>
+      <SectionCard index={4} title="Pricing" lead="Portfolio yield across MFIs, and how it relates to self-sufficiency.">
+        <div className="split split-even">
+          <div>
+            <Histogram
+              values={yieldValues}
+              binWidth={1}
+              domainMax={40}
+              reference={{ value: sector.reference_ceiling_pct, label: `${sector.reference_ceiling_pct}%: press-reported reference (unverified)` }}
+              xLabel="Portfolio yield, % of average loan outstanding (values above 40% clipped to 40)"
+            />
+            <p className="card-caption">
+              Median yield {sector.yield_distribution.median.toFixed(1)}%; {sector.yield_distribution.above_reference_count} MFIs above the
+              reference line. Yield is service-charge income over average loans, so it includes fees — it is not the
+              declining-balance rate a client pays, and this cannot show whether any MFI breaches a limit.
+            </p>
+          </div>
+          <div>
+            <ScatterPlot
+              points={scatterPoints}
+              xDomain={[0, 40]}
+              yDomain={[40, 250]}
+              xLabel="Portfolio yield, %"
+              yLabel="Operating self-sufficiency, %"
+              referenceY={{ value: 100, label: "Costs just covered" }}
+            />
+            <p className="card-caption">One point per MFI; hover for its name. June 2025.</p>
+          </div>
+        </div>
+      </SectionCard>
 
-      <section className="card">
-        <h2>4. Pricing</h2>
-        <Histogram
-          values={yieldValues}
-          binWidth={1}
-          domainMax={40}
-          reference={{ value: sector.reference_ceiling_pct, label: `${sector.reference_ceiling_pct}%: press-reported reference (unverified)` }}
-          xLabel="Portfolio yield, % of average loan outstanding (values above 40% clipped to 40)"
-        />
-        <p className="card-caption">
-          Median yield {sector.yield_distribution.median.toFixed(1)}%; {sector.yield_distribution.above_reference_count} MFIs above the
-          reference line. Yield is service-charge income over average loans, so it includes fees — it is not the
-          declining-balance rate a client pays, and this cannot show whether any MFI breaches a limit.
-        </p>
-        <ScatterPlot
-          points={scatterPoints}
-          xDomain={[0, 40]}
-          yDomain={[40, 250]}
-          xLabel="Portfolio yield, %"
-          yLabel="Operating self-sufficiency, %"
-          referenceY={{ value: 100, label: "Costs just covered" }}
-        />
-        <p className="card-caption">One point per MFI; hover for its name. June 2025.</p>
-      </section>
-
-      <section className="card">
-        <h2>5. Funding mix</h2>
+      <SectionCard index={5} title="Funding mix" lead="Where MFIs' funds come from, by size band.">
         <StackedBars
           series={FUNDING_SERIES}
           rows={sector.funding_by_band.map((b) => ({
@@ -202,41 +224,39 @@ export function SectorOverview({ data }: { data: AppData }) {
           caption="Funding mix change, June 2024 to June 2025"
           pageSize={10}
         />
-      </section>
+      </SectionCard>
 
-      <section className="card">
-        <h2>6. Outreach</h2>
-        <RangeDots rows={loanSizeRange} domainMin={0} domainMax={80} unit="K taka" formatValue={(v) => v.toFixed(0)} />
-        <p className="card-caption">
-          Average loan per borrower, thousand taka, by size band. Sector-wide average{" "}
-          {formatCompactTaka(sector.outreach_sector.avg_loan_size_bdt)} per borrower; typical MFI's median{" "}
-          {formatCompactTaka(sector.outreach_typical.median_avg_loan_size_bdt)}. Women are{" "}
-          {formatPercent(sector.outreach_sector.female_client_share_pct)} of clients.
-        </p>
-      </section>
+      <div className="card-grid">
+        <SectionCard index={6} title="Outreach" lead="Average loan per borrower, by size band.">
+          <RangeDots rows={loanSizeRange} domainMin={0} domainMax={80} unit="K taka" formatValue={(v) => v.toFixed(0)} />
+          <p className="card-caption">
+            Average loan per borrower, thousand taka, by size band. Sector-wide average{" "}
+            {formatCompactTaka(sector.outreach_sector.avg_loan_size_bdt)} per borrower; typical MFI's median{" "}
+            {formatCompactTaka(sector.outreach_typical.median_avg_loan_size_bdt)}. Women are{" "}
+            {formatPercent(sector.outreach_sector.female_client_share_pct)} of clients.
+          </p>
+        </SectionCard>
+        <SectionCard index={7} title="Data quality" lead="MFIs failing each plausibility check.">
+          <HorizontalBars
+            rows={sector.quality_flags.map((f) => ({
+              label: QUALITY_CHECK_SHORT_LABELS[f.check] ?? f.check,
+              fullLabel: f.check,
+              value: f.mfis_flagged,
+              endLabel: `${f.mfis_flagged} of ${f.mfis_checked}`,
+            }))}
+            domainMax={Math.max(...sector.quality_flags.map((f) => f.mfis_flagged), 5)}
+          />
+          <p className="card-caption">
+            Plausibility checks, counts only — no institution is named. Full list of published inconsistencies in{" "}
+            <a href="https://github.com/khalilurrrahmanridoykhan/kisti-microfinance-analytics/blob/main/docs/extraction-notes.md">
+              docs/extraction-notes.md
+            </a>
+            .
+          </p>
+        </SectionCard>
+      </div>
 
-      <section className="card">
-        <h2>7. Data quality</h2>
-        <HorizontalBars
-          rows={sector.quality_flags.map((f) => ({
-            label: QUALITY_CHECK_SHORT_LABELS[f.check] ?? f.check,
-            fullLabel: f.check,
-            value: f.mfis_flagged,
-            endLabel: `${f.mfis_flagged} of ${f.mfis_checked}`,
-          }))}
-          domainMax={Math.max(...sector.quality_flags.map((f) => f.mfis_flagged), 5)}
-        />
-        <p className="card-caption">
-          Plausibility checks, counts only — no institution is named. Full list of published inconsistencies in{" "}
-          <a href="https://github.com/khalilurrrahmanridoykhan/kisti-microfinance-analytics/blob/main/docs/extraction-notes.md">
-            docs/extraction-notes.md
-          </a>
-          .
-        </p>
-      </section>
-
-      <section className="card">
-        <h2>8. Peer groups and a screening rule</h2>
+      <SectionCard index={8} title="Peer groups and a screening rule">
         <p>
           K-means on seven standardised ratios gives {sector.peer_groups.length} groups (best silhouette{" "}
           {Math.max(...sector.peer_silhouette.map((s) => s.silhouette)).toFixed(2)} — a low score means the structure is weak;
@@ -272,7 +292,7 @@ export function SectorOverview({ data }: { data: AppData }) {
           {formatPercent(sector.screening.flagged_loans_share_pct)} of loans. A filter on financial-structure ratios, not a
           measure of delinquency; reported as a count only, not a named list.
         </p>
-      </section>
+      </SectionCard>
     </div>
   );
 }
