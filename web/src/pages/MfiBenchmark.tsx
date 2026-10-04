@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { DataTable, type Column } from "../components/DataTable";
+import { SectionCard } from "../components/SectionCard";
 import { PercentileBar } from "../components/PercentileBar";
 import type { AppData } from "../lib/data";
 import { formatCompactTaka, formatInt, formatPercent } from "../lib/format";
@@ -92,16 +93,19 @@ export function MfiBenchmark({ data }: { data: AppData }) {
   const rows = useMemo(() => (band === "all" ? data.mfis : data.mfis.filter((m) => m.size_band === band)), [data.mfis, band]);
 
   return (
-    <div className="card">
-      <h2>MFI benchmark</h2>
-      <p>
+    <SectionCard
+      title="MFI benchmark"
+      lead={
+        <>
         All {data.mfis.length} active MFIs. Percentile is the MFI's rank against others in the same size band (100 = highest in
         the band). Where a ratio is blank, that MFI does not appear in the underlying MRA table — see{" "}
         <a href="https://github.com/khalilurrrahmanridoykhan/kisti-microfinance-analytics/blob/main/docs/extraction-notes.md">
           docs/extraction-notes.md
         </a>
         .
-      </p>
+        </>
+      }
+    >
       <DataTable
         columns={cols}
         rows={rows}
@@ -122,6 +126,6 @@ export function MfiBenchmark({ data }: { data: AppData }) {
           </select>
         }
       />
-    </div>
+    </SectionCard>
   );
 }
