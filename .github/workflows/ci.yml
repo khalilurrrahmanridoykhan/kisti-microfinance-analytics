@@ -76,7 +76,7 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
 
   # Deploys the same build to kisti.krrkhan.com over rsync/SSH, using a deploy key that is
   # restricted (via rrsync, see docs/dashboard-design.md) to only the dashboard's own directory
